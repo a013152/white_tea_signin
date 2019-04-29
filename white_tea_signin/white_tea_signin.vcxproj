@@ -43,6 +43,7 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
+    <IncludePath>$(ProjectDir)cppJson\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -83,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cMyTimer.h" />
+    <ClInclude Include="cppJson\json_batchallocator.h" />
     <ClInclude Include="Curl.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="NFCReader.h" />
@@ -91,6 +93,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cMyTimer.cpp" />
+    <ClCompile Include="cppJson\json_reader.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="cppJson\json_value.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="cppJson\json_writer.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="Curl.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="NFCReader.cpp" />

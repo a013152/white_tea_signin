@@ -12,11 +12,20 @@
 #include <string>
 #include <time.h>
 #include <windows.h>
+#include <vector>
+
+using namespace std;
+
+
+#define MAX8192 8192
+#define MAX1024 1024
+
 
 std::string getAppDir();
 extern std::string g_strAppDir;   //目录
 extern std::string g_strAppSetIniPath;  //配置文件路径
 void initSys();
+std::string UTF_82ASCII(std::string& strUtf8Code);
 
 
 // TODO:  在此处引用程序需要的其他头文件

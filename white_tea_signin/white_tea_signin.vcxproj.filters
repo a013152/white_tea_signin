@@ -19,6 +19,9 @@
     <Filter Include="CURL">
       <UniqueIdentifier>{cfbdfd5a-aaf1-4cc8-8812-28e32c9da196}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CURL\cppJson">
+      <UniqueIdentifier>{5bd5ef6d-4cdf-45b2-a1c7-8725036e8f30}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -42,6 +45,9 @@
     <ClInclude Include="Log.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="cppJson\json_batchallocator.h">
+      <Filter>CURL\cppJson</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -61,6 +67,15 @@
     </ClCompile>
     <ClCompile Include="Log.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="cppJson\json_writer.cpp">
+      <Filter>CURL\cppJson</Filter>
+    </ClCompile>
+    <ClCompile Include="cppJson\json_reader.cpp">
+      <Filter>CURL\cppJson</Filter>
+    </ClCompile>
+    <ClCompile Include="cppJson\json_value.cpp">
+      <Filter>CURL\cppJson</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
