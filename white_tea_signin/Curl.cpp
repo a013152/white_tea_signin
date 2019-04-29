@@ -1,13 +1,9 @@
 #include "stdafx.h"
 #include "Curl.h"
 
-#include "cppJson/json/json.h"
-
 CCurl* pthis = nullptr;
-CCurl::CCurl() :recIndex(0), shopID(0),processID(0)
+CCurl::CCurl()
 {
-	memset(recBuffer, 0, MAX8192);
-	memset(szToken, 0, MAX1024);
 }
 
 
@@ -22,6 +18,7 @@ CCurl* CCurl::getInstance()
 CCurl::~CCurl()
 {
 }
+<<<<<<< HEAD
 
 
 
@@ -214,3 +211,5 @@ void CCurl::getProcessList(){
 	curl_slist_free_all(headers);
 	curl_easy_cleanup(curl);
 }
+=======
+>>>>>>> parent of cd673b9... 20190429-02
