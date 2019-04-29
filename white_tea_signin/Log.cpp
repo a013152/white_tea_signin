@@ -22,6 +22,9 @@ CLog* CLog::getInstance()
 }
 CLog::CLog()
 {
+	strLog[infoLog] = "info";
+	strLog[debugLog] = "debug";
+	strLog[errorLog] = "error";
 }
 
 
@@ -30,23 +33,16 @@ void CLog::logInfo(logType type_, const char* format, ...)
 {
 	char szLogSumb[1024] = { 0 };
 	char szDstLan[1024] = { 0 };
+	char szTemp[256] = { 0 };
 	va_list arglist;
 	va_start(arglist, format);
 	vsprintf_s(szDstLan, format, arglist);
 	va_end(arglist);
 
 	GetLocalTime(&stCurrentTime);
-	if (type_ == infoLog){
-		sprintf_s(szLogSumb, "%02d:%02d:%02d[info]:%s\n", stCurrentTime.wHour, stCurrentTime.wMinute, stCurrentTime.wSecond, szDstLan);
-	}
-	else if (type_ == debugLog){
-		sprintf_s(szLogSumb, "%02d:%02d:%02d[debug]:%s\n", stCurrentTime.wHour, stCurrentTime.wMinute, stCurrentTime.wSecond, szDstLan);
-	}
-	else if (type_ == errorLog){
-		sprintf_s(szLogSumb, "%02d:%02d:%02d[error]:%s\n", stCurrentTime.wHour, stCurrentTime.wMinute, stCurrentTime.wSecond, szDstLan);
-	}
+	sprintf_s(szLogSumb, "%02d:%02d:%02d[%s]:%s\r\n", stCurrentTime.wHour, stCurrentTime.wMinute, stCurrentTime.wSecond, strLog[type_].c_str(), szDstLan); 
 	
-	char szTemp[256] = { 0 };
+	
 	sprintf_s(szTemp, "%s\\log\\%04d%02d%02d.txt", g_strAppDir.c_str(), stCurrentTime.wYear, stCurrentTime.wMonth, stCurrentTime.wDay);
 	fopen_s(&fp, szTemp, "ab+");/*以读/写方式打开一个二进制文件，允许读或在文件末追加数据。如果不存在,会自动创建*/
 	fwrite(szLogSumb, strlen(szLogSumb), 1, fp);

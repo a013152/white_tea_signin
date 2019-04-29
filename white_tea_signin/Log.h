@@ -16,6 +16,7 @@ class CLog
 	SYSTEMTIME stCurrentTime  ;
 	//SYSTEMTIME stPreTime ;
 	FILE *fp = NULL;  //нд╪Ч╬Д╠З
+	string strLog[10];
 public:
 	static CLog* getInstance();
 

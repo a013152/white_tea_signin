@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "NFCReader.h"
 #include <minwindef.h>
+#include "Log.h"
 
 
 CNFCReader* pthis = nullptr;
@@ -43,7 +44,8 @@ bool CNFCReader::openDev()
 		status = Sys_Close(&g_hDevice);
 		if (status != 0)
 		{
-			printf("Sys_Close failed !\n");
+			printf("πÿ±’NFC∂¡ø®∆˜ ß∞‹ !\n");
+			GET_LOG->logInfo(errorLog, "πÿ±’NFC∂¡ø®∆˜ ß∞‹£°");
 		}
 	}
 
@@ -51,7 +53,8 @@ bool CNFCReader::openDev()
 	status = Sys_Open(&g_hDevice, 0, 0x0416, 0x8020);
 	if (status != 0)
 	{
-		printf("Sys_Open failed !\n");
+		printf("¥Úø™NFC∂¡ø®∆˜ ß∞‹ !\n");
+		GET_LOG->logInfo(errorLog, "¥Úø™NFC∂¡ø®∆˜ ß∞‹£°");
 		return false;
 	}
 
@@ -61,7 +64,8 @@ bool CNFCReader::openDev()
 	status = Sys_SetAntenna(g_hDevice, 0);
 	if (status != 0)
 	{
-		printf("Sys_SetAntenna failed !\n");
+		printf("…Ë÷√NFC∂¡ø®∆˜∆Ù∂ØÃΩ≤‚ ß∞‹ !\n");
+		GET_LOG->logInfo(errorLog, "…Ë÷√NFC∂¡ø®∆˜∆Ù∂ØÃΩ≤‚ ß∞‹£°");
 		return false;
 	}
 	Sleep(5); //Appropriate delay after Sys_SetAntenna operating
@@ -70,7 +74,8 @@ bool CNFCReader::openDev()
 	status = Sys_InitType(g_hDevice, 'A');
 	if (status != 0)
 	{
-		printf("Sys_InitType failed !\n");
+		printf("≥ı ºªØNFC∂¡ø®∆˜ ß∞‹ !\n");
+		GET_LOG->logInfo(errorLog, "≥ı ºªØNFC∂¡ø®∆˜ ß∞‹£°");
 		return false;
 	}
 	Sleep(5); //Appropriate delay after Sys_InitType operating
@@ -79,7 +84,8 @@ bool CNFCReader::openDev()
 	status = Sys_SetAntenna(g_hDevice, 1);
 	if (status != 0)
 	{
-		printf("Sys_SetAntenna failed !\n");
+		printf("…Ë÷√NFC∂¡ø®∆˜∆Ù∂ØÃΩ≤‚ ß∞‹ !\n");
+		GET_LOG->logInfo(errorLog, "…Ë÷√NFC∂¡ø®∆˜∆Ù∂ØÃΩ≤‚ ß∞‹£°");
 		return false;
 	}
 	Sleep(5); //Appropriate delay after Sys_SetAntenna operating
@@ -89,7 +95,8 @@ bool CNFCReader::openDev()
 	status = Sys_SetBuzzer(g_hDevice, 20);
 	if (status != 0)
 	{
-		printf("Sys_SetBuzzer failed !\n");
+		printf("…Ë÷√NFC∂¡ø®∆˜∑‰√˘∆˜ ß∞‹ !\n");
+		GET_LOG->logInfo(errorLog, "…Ë÷√NFC∂¡ø®∆˜∑‰√˘∆˜ ß∞‹£°");
 		return false;
 	}
 
@@ -99,6 +106,7 @@ bool CNFCReader::openDev()
 	int tempInterval = GetPrivateProfileIntA("set", "scanNFCReader", 10000, g_strAppSetIniPath.c_str());
 	AddTimer(Timer_Read_NFC, tempInterval);
 	printf("NFC∂¡»°ø®∆˜æÕ–˜!\n");
+	GET_LOG->logInfo(infoLog, "NFC∂¡»°ø®∆˜æÕ–˜,∆Ù∂Ø∂® ±∆˜%d√Î∂¡»°£°",tempInterval/1000);
 	return true;
 }
 
@@ -237,6 +245,10 @@ std::string CNFCReader::readNfc()
 	Sys_SetBuzzer(g_hDevice, 10); //Beep 100ms
 	Sleep(110);
 	carPreData = str;
+	GET_LOG->logInfo(infoLog, "∂¡»°µΩnfc–≈œ¢£∫%s", str.c_str());
+	if (m_pFun != nullptr){
+		m_pFun(str.c_str());
+	}
 	return str;
 }
 

@@ -27,5 +27,6 @@ extern std::string g_strAppSetIniPath;  //配置文件路径
 void initSys();
 std::string UTF_82ASCII(std::string& strUtf8Code);
 
+typedef void(*CALLBACK_FUN)(const char*);
 
 // TODO:  在此处引用程序需要的其他头文件

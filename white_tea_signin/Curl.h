@@ -40,5 +40,7 @@ public:
 	void getProcessList();
 	void parseJsonLogin(const std::string strData);
 	void parseJsonResult(const std::string strData);
+
+	static void logninFunction(const char* szData);
 };
 

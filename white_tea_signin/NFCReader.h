@@ -1,4 +1,5 @@
 #pragma once
+#include "stdafx.h"
 #include <windows.h>
 #include "./include/hfrdapi.h"
 #pragma comment(lib,"./lib/hfrdapi.lib") 
@@ -17,15 +18,16 @@ class CNFCReader:public cMyTimer
 {
 	CNFCReader();
 	HINSTANCE m_hInstMaster;
+	CALLBACK_FUN m_pFun;
 public:	
 	/*获取类实例*/
 	static CNFCReader* getInstance();
 	static void  freeInstance();
 	~CNFCReader(); 
 
-
 	bool openDev();
 	string readNfc();
+	void setCallbackFun(CALLBACK_FUN fun){ m_pFun = fun; }
 
 	virtual int OnTimer(int id, int iParam = 0, string str = "");
 };

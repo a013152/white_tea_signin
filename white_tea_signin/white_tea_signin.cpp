@@ -4,14 +4,17 @@
 #include "stdafx.h" 
 #include "NFCReader.h" 
 #include "Log.h"
+#include "Curl.h"
 std::string g_strAppDir;
 std::string g_strAppSetIniPath;
 
 
 int _tmain(int argc, _TCHAR* argv[])
 {	
+	
 	initSys();
 	
+	GET_NFC->setCallbackFun(CCurl::logninFunction);
 	////开启NFC读卡器
 	if (GET_NFC->openDev()){		 
 	//	
@@ -39,8 +42,7 @@ void initSys(){
 	SYSTEMTIME sys;
 	GetLocalTime(&sys);	
 	string Day[7] = { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" }; 
-	string today_day = Day[sys.wDayOfWeek];
-	
+	string today_day = Day[sys.wDayOfWeek];	
 	printf("%02d:%02d:%02d.%03d %s\nApp start!\n", sys.wHour, sys.wMinute, sys.wSecond, sys.wMilliseconds, today_day.c_str());
 
 	g_strAppDir = getAppDir();

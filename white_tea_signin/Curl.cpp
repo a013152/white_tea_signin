@@ -2,6 +2,7 @@
 #include "Curl.h"
 
 #include "cppJson/json/json.h"
+#include "Log.h"
 
 CCurl* pthis = nullptr;
 CCurl::CCurl() :recIndex(0), shopID(0),processID(0)
@@ -169,6 +170,12 @@ void CCurl::parseJsonResult(const std::string strData){
 //	//将JSON结构所占用的数据空间释放
 //	cJSON_Delete(json);
 }
+
+void CCurl::logninFunction(const char* szData)
+{
+	printf("Curl类执行 回调。data:%s\n", szData);
+}
+
 //获取流程
 void CCurl::getProcessList(){
 	CURL *curl = curl_easy_init();
