@@ -124,7 +124,7 @@ void CCurl::login01(string strAccount, string strPassword)
 //
 ////分析接口返回的json
 void CCurl::parseJsonResult(const std::string strData){
-	cJSON * json = cJSON_Parse(strData.c_str());
+//	cJSON * json = cJSON_Parse(strData.c_str());
 //	if (json == nullptr){
 //		printf("解析错误002\n");
 //		return;

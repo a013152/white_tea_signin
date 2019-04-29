@@ -20,7 +20,7 @@
       <UniqueIdentifier>{cfbdfd5a-aaf1-4cc8-8812-28e32c9da196}</UniqueIdentifier>
     </Filter>
     <Filter Include="CURL\cppJson">
-      <UniqueIdentifier>{5bd5ef6d-4cdf-45b2-a1c7-8725036e8f30}</UniqueIdentifier>
+      <UniqueIdentifier>{0b637c5c-e5a8-4190-bd08-3cbf055b069a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
