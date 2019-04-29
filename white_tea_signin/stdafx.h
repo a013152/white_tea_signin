@@ -9,7 +9,14 @@
 
 #include <stdio.h>
 #include <tchar.h>
+#include <string>
+#include <time.h>
+#include <windows.h>
 
+std::string getAppDir();
+extern std::string g_strAppDir;   //目录
+extern std::string g_strAppSetIniPath;  //配置文件路径
+void initSys();
 
 
 // TODO:  在此处引用程序需要的其他头文件

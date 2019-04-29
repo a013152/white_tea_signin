@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
-    <IntDir>$(OutDir)TempFile\</IntDir>
+    <IntDir>$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -84,6 +84,7 @@
   <ItemGroup>
     <ClInclude Include="cMyTimer.h" />
     <ClInclude Include="Curl.h" />
+    <ClInclude Include="Log.h" />
     <ClInclude Include="NFCReader.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -91,6 +92,7 @@
   <ItemGroup>
     <ClCompile Include="cMyTimer.cpp" />
     <ClCompile Include="Curl.cpp" />
+    <ClCompile Include="Log.cpp" />
     <ClCompile Include="NFCReader.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

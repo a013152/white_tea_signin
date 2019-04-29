@@ -5,8 +5,10 @@
 //处理网络接口http请求与解析返回
 class CCurl
 {
-public:
 	CCurl();
+public:
+	static CCurl* getInstance();
+	
 	~CCurl();
 };
 

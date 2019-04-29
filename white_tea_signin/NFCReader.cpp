@@ -20,8 +20,7 @@ void CNFCReader::freeInstance()
 	if (pthis){ 
 		delete pthis;
 		pthis = nullptr;
-	}
-	
+	}	
 }
 
 CNFCReader::CNFCReader()
@@ -96,7 +95,9 @@ bool CNFCReader::openDev()
 
 	//Tips
 	//printf("Connect reader succeed !\n");
-	AddTimer(Timer_Read_NFC, 1000);
+	//¶ÁÈ¡ÅäÖÃ=¡·
+	int tempInterval = GetPrivateProfileIntA("set", "scanNFCReader", 10000, g_strAppSetIniPath.c_str());
+	AddTimer(Timer_Read_NFC, tempInterval);
 	printf("NFC¶ÁÈ¡¿¨Æ÷¾ÍÐ÷!\n");
 	return true;
 }
