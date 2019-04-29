@@ -1,3 +1,11 @@
 
 white_tea_signin/ipch/white_tea_signin-ec3f399c/white_tea_signin-8c0e268d.ipch
 *.ipch
+*.pdb
+*.pch
+*.obj
+*.opensdf
+*.sdf
+*.tlog
+white_tea_signin/Debug/vc120.idb
+white_tea_signin/Debug/TempFile/white_tea_signin.tlog/white_tea_signin.lastbuildstate
