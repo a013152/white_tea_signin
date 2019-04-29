@@ -44,9 +44,17 @@ void CLog::logInfo(logType type_, const char* format, ...)
 	
 	
 	sprintf_s(szTemp, "%s\\log\\%04d%02d%02d.txt", g_strAppDir.c_str(), stCurrentTime.wYear, stCurrentTime.wMonth, stCurrentTime.wDay);
+	
 	fopen_s(&fp, szTemp, "ab+");/*以读/写方式打开一个二进制文件，允许读或在文件末追加数据。如果不存在,会自动创建*/
+	if (fp == NULL){
+		detectPath(szTemp);
+		fopen_s(&fp, szTemp, "ab+");
+		if (fp == NULL)
+			return;
+	}
 	fwrite(szLogSumb, strlen(szLogSumb), 1, fp);
 	fclose(fp);
+	fp = NULL;
 	
 }
 
