@@ -13,13 +13,19 @@ CLog* CLog::getInstance()
 			// 其它代码
 		}
 		catch (const std::bad_alloc& e) {
-			printf("%s\n", e.what());
-
+			printf("创建log实例失败：%s\n", e.what());
 		}
-		
 	}
 	return pthis;
 }
+
+void CLog::freeInstance()
+{
+	if (pthis){
+		delete pthis;
+	}
+}
+
 CLog::CLog()
 {
 	strLog[infoLog] = "info";

@@ -5,6 +5,8 @@
 #include "NFCReader.h" 
 #include "Log.h"
 #include "Curl.h"
+#include "PlaySound.h"
+#include <iostream>
 std::string g_strAppDir;
 std::string g_strAppSetIniPath;
 
@@ -12,18 +14,58 @@ std::string g_strAppSetIniPath;
 int _tmain(int argc, _TCHAR* argv[])
 {	
 	
-	initSys();
+	 
+
+	string str111 = "zh-CNC-00001-2";
+	//[A-Z]-[0-9]{5}-[0-9]  
+	//[\\s\\S]*shop.tdneed.com[\\s\\S]*
+	//使用正则表达式判断
+	//regex pattern2(regex_str2, regex::icase);
 	
-	GET_NFC->setCallbackFun(CCurl::logninFunction);
-	////开启NFC读卡器
-	if (GET_NFC->openDev()){		 
-	//	
+	//是否匹配
+	std::string strPattern("a\\w");  // [line 1]
+	std::regex r(strPattern);
+	std::smatch matchResult;
+	string strTag;
+	
+
+	////正则匹配
+	//if (std::regex_match(str111, matchResult, regex_))
+	
+	{
+		for (size_t i = 0; i < matchResult.size(); ++i)
+		{
+			strTag = matchResult[i];
+			//std::cout << strTag << std::endl;
+		}
 	}
-	// 
-	//printf("path:%s\n", getAppDir().c_str());
+	/*string str222 = "I'm ChenLin,1988 is my birth year";
+	string regex_str2(".*(\\d{4}).*");
+	regex pattern2(regex_str2, regex::icase);
+	if (regex_match(str222, matchResult, pattern2)){
+		if (matchResult.size()>1)
+			strTag = matchResult[1];
+		 
+	}*/
+	printf("%s\n", strTag.c_str());
+
+
+	initSys();
+	/*GET_PLAYS->addPlay(CPlaySound::begin);
+	GET_PLAYS->addPlay(CPlaySound::end);*/
+	
+	//设置回调
+	GET_NFC->setCallbackFun(CCurl::logninFunction);
+	//开启NFC读卡器
+	if (GET_NFC->openDev()){		 
+	  
+	}
+	  
 
 	getchar();
 	GET_NFC->freeInstance();
+	GET_PLAYS->freeInstance();
+	GET_LOG->freeInstance();
 	return 0;
 }
 
@@ -43,7 +85,7 @@ void initSys(){
 	GetLocalTime(&sys);	
 	string Day[7] = { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" }; 
 	string today_day = Day[sys.wDayOfWeek];	
-	printf("%02d:%02d:%02d.%03d %s\nApp start!\n", sys.wHour, sys.wMinute, sys.wSecond, sys.wMilliseconds, today_day.c_str());
+	printf("%02d:%02d:%02d %s\nApp start!\n", sys.wHour, sys.wMinute, sys.wSecond, today_day.c_str());
 
 	g_strAppDir = getAppDir();
 	g_strAppSetIniPath = g_strAppDir + "set.ini";

@@ -20,13 +20,21 @@ CCurl* CCurl::getInstance()
 	return pthis;
 }
 
+void CCurl::freeInstance()
+{
+	if (pthis){
+		delete pthis;
+		pthis = nullptr;
+	}
+}
+
 CCurl::~CCurl()
 {
 }
 
 
 
-size_t CCurl::s_CallBack(void *ptr, size_t size, size_t nmemb, void *stream)
+size_t CCurl::callBack_(void *ptr, size_t size, size_t nmemb, void *stream)
 {
 	return pthis->callBack(ptr, size, nmemb, stream);
 }
@@ -83,6 +91,11 @@ void CCurl::parseJsonLogin(const std::string strData)
 
 
 
+void CCurl::autoLogin()
+{
+
+}
+
 //登陆
 void CCurl::login01(string strAccount, string strPassword)
 {
@@ -105,7 +118,7 @@ void CCurl::login01(string strAccount, string strPassword)
 	sprintf_s(szData1, "{\"account\":\"%s\",\"password\":\"%s\"}", strAccount.c_str(), strPassword.c_str());
 	curl_easy_setopt(curl, CURLOPT_POSTFIELDS, szData1);  //-data 数据
 	curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, strlen(szData1));  //-data 数据
-	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, s_CallBack);
+	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, callBack_);
 
 	recIndex = 0;
 	memset(recBuffer, 0, MAX8192);
@@ -176,6 +189,19 @@ void CCurl::logninFunction(const char* szData)
 	printf("Curl类执行 回调。data:%s\n", szData);
 }
 
+int CCurl::OnTimer(int id, int iParam /*= 0*/, string str /*= ""*/)
+{
+	switch (id)
+	{
+	case Timer_Auto_login:
+		autoLogin();
+		break;
+	default:
+		break;
+	}
+	return 1; //返回1 该定时器不会推出
+}
+
 //获取流程
 void CCurl::getProcessList(){
 	CURL *curl = curl_easy_init();
@@ -204,7 +230,7 @@ void CCurl::getProcessList(){
 	sprintf_s(szData1, "{\"type\":\"2\",\"append_shops_id\":\"%d\"}", shopID);
 	curl_easy_setopt(curl, CURLOPT_POSTFIELDS, szData1);  //-data 数据
 	curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, strlen(szData1));  //-data 数据
-	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, s_CallBack);
+	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, callBack_);
 	recIndex = 0;
 	memset(recBuffer, 0, MAX8192);
 	CURLcode ret = curl_easy_perform(curl);

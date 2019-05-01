@@ -22,6 +22,15 @@
     <Filter Include="CURL\cppJson">
       <UniqueIdentifier>{0b637c5c-e5a8-4190-bd08-3cbf055b069a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="PlaySound">
+      <UniqueIdentifier>{82ab5fff-18cb-42ed-a0f7-1d267bf55704}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyTimer">
+      <UniqueIdentifier>{a880b7a5-e59a-4983-b2a3-6c00396b71e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Log">
+      <UniqueIdentifier>{b1864769-de9f-44a0-853f-b0593783c7d7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -39,14 +48,17 @@
     <ClInclude Include="Curl.h">
       <Filter>CURL</Filter>
     </ClInclude>
-    <ClInclude Include="cMyTimer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Log.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="cppJson\json_batchallocator.h">
       <Filter>CURL\cppJson</Filter>
+    </ClInclude>
+    <ClInclude Include="cMyTimer.h">
+      <Filter>MyTimer</Filter>
+    </ClInclude>
+    <ClInclude Include="PlaySound.h">
+      <Filter>PlaySound</Filter>
+    </ClInclude>
+    <ClInclude Include="Log.h">
+      <Filter>Log</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -62,12 +74,6 @@
     <ClCompile Include="Curl.cpp">
       <Filter>CURL</Filter>
     </ClCompile>
-    <ClCompile Include="cMyTimer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Log.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="cppJson\json_writer.cpp">
       <Filter>CURL\cppJson</Filter>
     </ClCompile>
@@ -76,6 +82,15 @@
     </ClCompile>
     <ClCompile Include="cppJson\json_value.cpp">
       <Filter>CURL\cppJson</Filter>
+    </ClCompile>
+    <ClCompile Include="PlaySound.cpp">
+      <Filter>PlaySound</Filter>
+    </ClCompile>
+    <ClCompile Include="cMyTimer.cpp">
+      <Filter>MyTimer</Filter>
+    </ClCompile>
+    <ClCompile Include="Log.cpp">
+      <Filter>Log</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

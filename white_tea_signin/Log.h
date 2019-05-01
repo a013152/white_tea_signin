@@ -19,7 +19,7 @@ class CLog
 	string strLog[10];
 public:
 	static CLog* getInstance();
-
+	static void  freeInstance();
 	void logInfo(logType type, const char* format, ...);
 
 	~CLog();

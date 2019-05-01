@@ -4,6 +4,7 @@
 #include "Log.h"
 
 
+
 CNFCReader* pthis = nullptr;
 
 HID_DEVICE g_hDevice = HID_DEVICE(-1);  //g_hDevice must be initialized as -1 before use
@@ -19,6 +20,8 @@ CNFCReader* CNFCReader::getInstance(){
 void CNFCReader::freeInstance()
 {
 	if (pthis){ 
+		pthis->DeleteTimer(Timer_Read_NFC);
+		::Sleep(TIME_INTERVEAL);
 		delete pthis;
 		pthis = nullptr;
 	}	
@@ -26,10 +29,22 @@ void CNFCReader::freeInstance()
 
 CNFCReader::CNFCReader()
 {
+	//读取配置=》时间间隔
+	tempInterval = GetPrivateProfileIntA("set", "scanNFCReader", 10000, g_strAppSetIniPath.c_str());
+	//读取配置，获取正则表达式
+	char szTemp[256] = { 0 };
+	GetPrivateProfileString("regex", "URLPattern1", "[\\s\\S]*shop.tdneed.com[\\s\\S]*", szTemp, 256, g_strAppSetIniPath.c_str());
+	strPattern = szTemp;
+	GetPrivateProfileString("regex", "URLPattern2", "shop.tdneed.com[\\s\\S]*", szTemp, 256, g_strAppSetIniPath.c_str());
+	strURLPattern2 = szTemp;
+	GetPrivateProfileString("regex", "ConPattern1", "[\\s\\S]*[A-Z]-[0-9]{5}-[0-9][\\s\\S]*", szTemp, 256, g_strAppSetIniPath.c_str());
+	strConPattern  = szTemp;
+	GetPrivateProfileString("regex", "ConPattern2", "[A-Z]-[0-9]{5}-[0-9][\\s\\S]*", szTemp, 256, g_strAppSetIniPath.c_str());
+	strConPattern2 = szTemp;
 }
 CNFCReader::~CNFCReader()
 {
-	DeleteTimer(Timer_Read_NFC);
+	
 }
  
 bool CNFCReader::openDev()
@@ -102,11 +117,11 @@ bool CNFCReader::openDev()
 
 	//Tips
 	//printf("Connect reader succeed !\n");
-	//读取配置=》
-	int tempInterval = GetPrivateProfileIntA("set", "scanNFCReader", 10000, g_strAppSetIniPath.c_str());
+	
 	AddTimer(Timer_Read_NFC, tempInterval);
 	printf("NFC读取卡器就绪!\n");
-	GET_LOG->logInfo(infoLog, "NFC读取卡器就绪,启动定时器%d秒读取！",tempInterval/1000);
+	double tempf = tempInterval / 1000.0;
+	GET_LOG->logInfo(infoLog, "NFC读取卡器就绪,启动定时器%0.1f秒读取！", tempf);//%w.hf表示输出的总宽度是w小数点后保留h位
 	return true;
 }
 
@@ -246,9 +261,8 @@ std::string CNFCReader::readNfc()
 	Sleep(110);
 	carPreData = str;
 	GET_LOG->logInfo(infoLog, "读取到nfc信息：%s", str.c_str());
-	if (m_pFun != nullptr){
-		m_pFun(str.c_str());
-	}
+	doAnalyzeNFC(str);
+	
 	return str;
 }
 
@@ -263,4 +277,34 @@ int CNFCReader::OnTimer(int id, int iParam, string str)
 		break;
 	}
 	return 1; //返回1 该定时器不会推出
+}
+
+void CNFCReader::doAnalyzeNFC(const string inputStr)
+{
+	//使用正则表达式判断
+	std::regex regex_(strConPattern2.c_str(), regex::icase);
+	
+	std::smatch matchResult;
+	string strTag;
+
+	//正则匹配
+	if (std::regex_search(inputStr, matchResult, regex_))
+	{ 		 
+		for (size_t i = 0; i < matchResult.size(); ++i)
+		{
+			strTag =  matchResult[i];
+		}
+	}
+	//是否匹配
+	if (strTag.empty() == false){
+		if (m_pFun != nullptr){
+			m_pFun(strTag.c_str());
+		}
+	}
+	else{
+		//未匹配
+	}
+
+	
+	
 }

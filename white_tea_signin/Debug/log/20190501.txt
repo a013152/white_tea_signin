@@ -1,0 +1,18 @@
+17:55:47[debug]:App start! 
+17:55:47[error]:´ò¿ªNFC¶Á¿¨Æ÷Ê§°Ü£¡
+18:34:45[debug]:App start! 
+18:34:45[error]:´ò¿ªNFC¶Á¿¨Æ÷Ê§°Ü£¡
+19:03:11[debug]:App start! 
+19:03:11[error]:´ò¿ªNFC¶Á¿¨Æ÷Ê§°Ü£¡
+19:05:32[debug]:App start! 
+19:05:32[error]:´ò¿ªNFC¶Á¿¨Æ÷Ê§°Ü£¡
+19:06:19[debug]:App start! 
+19:06:19[error]:´ò¿ªNFC¶Á¿¨Æ÷Ê§°Ü£¡
+19:08:03[debug]:App start! 
+19:08:03[error]:´ò¿ªNFC¶Á¿¨Æ÷Ê§°Ü£¡
+19:08:29[debug]:App start! 
+19:08:30[error]:´ò¿ªNFC¶Á¿¨Æ÷Ê§°Ü£¡
+19:16:01[debug]:App start! 
+19:16:01[error]:´ò¿ªNFC¶Á¿¨Æ÷Ê§°Ü£¡
+19:16:13[debug]:App start! 
+19:16:13[error]:´ò¿ªNFC¶Á¿¨Æ÷Ê§°Ü£¡
