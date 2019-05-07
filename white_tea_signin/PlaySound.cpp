@@ -8,7 +8,7 @@ CPlaySound* pthis = NULL;
 CPlaySound::CPlaySound() :playLoopFlag(true) 
 {
 	readSoundPath();
-
+	InitializeCriticalSection(&m_csSync);
 	m_hShutdownEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
 	m_hPlayEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
 	m_hEventArray[0] = m_hShutdownEvent;
@@ -54,7 +54,9 @@ void CPlaySound::playLoop()
 		case 1:
 		{
 				  string strPath;
-				  if (vtPlayTask.size() > 0){
+				  /** 进入临界段 */
+				  EnterCriticalSection(&m_csSync);
+				   if (vtPlayTask.size() > 0){
 					  for (vector<string>::iterator it = vtPlayTask.begin(); it != vtPlayTask.end();){
 						  strPath = *it;
 						  //	SND_FILENAME表示pszSound参数指定的是文件名（pszSound还可以指定资源、内存音乐、系统音乐等等）；
@@ -67,6 +69,9 @@ void CPlaySound::playLoop()
 						  it = vtPlayTask.begin();
 					  }
 				  }
+				  /** 离开临界段 */
+				  LeaveCriticalSection(&m_csSync);
+				
 				  ::Sleep(50);
 				  break;
 		}
@@ -103,6 +108,7 @@ void CPlaySound::playLoop_(void* p)
 
 CPlaySound::~CPlaySound()
 {
+	DeleteCriticalSection(&m_csSync);
 	playLoopFlag = false;
 	if (m_hShutdownEvent)
 	{
@@ -120,7 +126,16 @@ void CPlaySound::addPlay(soundType type_)
 {
 	string strPath = vtSoundPath[type_];
 	if (_access(strPath.c_str(), 0) !=-1){ 
+		/** 进入临界段 */
+		EnterCriticalSection(&m_csSync);
 		vtPlayTask.push_back(strPath);
+		/** 离开临界段 */
+		LeaveCriticalSection(&m_csSync);
 		SetEvent(m_hPlayEvent);
 	}
+}
+
+void CPlaySound::init()
+{
+
 }

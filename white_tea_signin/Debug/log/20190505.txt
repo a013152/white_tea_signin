@@ -1,0 +1,59 @@
+09:45:35[debug]:App start! 
+09:45:35[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+09:45:38[info]:读取到nfc信息：zh-CNC-00001
+09:54:05[debug]:App start! 
+09:54:05[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+09:58:02[info]:读取到nfc信息：zh-CNC-00001
+10:00:18[info]:读取到nfc信息：zh-CNC-00001
+10:02:10[debug]:App start! 
+10:02:10[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+10:11:54[info]:读取到nfc信息：zhC-00001-2
+10:22:04[info]:读取到nfc信息：zh-CNC-00001
+10:22:40[debug]:App start! 
+10:22:40[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+10:34:08[info]:读取到nfc信息：zhC-00001-2
+10:40:23[info]:读取到nfc信息：baidu.com
+10:41:39[info]:读取到nfc信息：zhC-00001-2
+10:43:34[info]:读取到nfc信息：zh-CNC-00001
+10:48:29[info]:读取到nfc信息：zh-CNC-00001
+10:54:27[info]:读取到nfc信息：zh-CNC-00001-2
+11:00:57[info]:读取到nfc信息：zh-CNC-00001
+11:40:36[debug]:App start! 
+11:40:36[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+11:40:43[debug]:App start! 
+11:40:43[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+11:42:25[info]:读取到nfc信息：zh-CNC-00001-2
+11:42:50[info]:读取到nfc信息：zhC-00001-2
+11:43:57[debug]:App start! 
+11:43:57[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+11:47:26[debug]:App start! 
+11:47:26[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+11:53:46[info]:读取到nfc信息：zh-CNC-00001-2
+11:53:51[info]:读取到nfc信息：zh-CNC-00001-2
+11:54:37[debug]:App start! 
+11:54:37[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+11:54:41[info]:读取到nfc信息：zh-CNC-00001-2
+11:54:43[info]:读取到nfc信息：zh-CNC-00001-2
+11:57:25[debug]:App start! 
+11:57:25[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+11:59:23[info]:读取到nfc信息：zh-CNC-00001-2
+11:59:51[debug]:App start! 
+11:59:51[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+11:59:53[info]:读取到nfc信息：zh-CNC-00001-2
+12:00:23[info]:读取到nfc信息：zh-CNC-00001-2
+12:00:56[debug]:App start! 
+12:00:56[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+12:00:58[info]:读取到nfc信息：zh-CNC-00001-2
+12:08:17[debug]:App start! 
+12:08:17[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+12:08:22[info]:读取到nfc信息：zh-CNC-00001-2
+12:14:33[info]:读取到nfc信息：baidu.com
+12:14:34[info]:读取到nfc信息：zhC-00001-2
+16:58:37[info]:读取到nfc信息：zh-CNC-00001-2
+16:59:31[info]:读取到nfc信息：zh-CNA-00001-2
+17:50:12[debug]:App start! 
+17:50:12[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+17:54:07[debug]:App start! 
+17:54:07[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+17:55:29[debug]:App start! 
+17:55:29[info]:NFC读取卡器就绪,启动定时器0.5秒读取！

@@ -33,8 +33,8 @@ public:
 	virtual ~cMyTimer();
 
 	//添加定时器
-	void AddTimer(unsigned timerId, unsigned timeMs,int param = 0,
-		char* p=NULL);
+	void AddTimer(unsigned timerId, unsigned timeMs,int param = 0, char* p=NULL);
+
 	//删除定时器
 	void DeleteTimer(int id);
 

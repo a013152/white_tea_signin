@@ -13,54 +13,17 @@ std::string g_strAppSetIniPath;
 
 int _tmain(int argc, _TCHAR* argv[])
 {	
-	
-	 
-
-	string str111 = "zh-CNC-00001-2";
-	//[A-Z]-[0-9]{5}-[0-9]  
-	//[\\s\\S]*shop.tdneed.com[\\s\\S]*
-	//使用正则表达式判断
-	//regex pattern2(regex_str2, regex::icase);
-	
-	//是否匹配
-	std::string strPattern("a\\w");  // [line 1]
-	std::regex r(strPattern);
-	std::smatch matchResult;
-	string strTag;
-	
-
-	////正则匹配
-	//if (std::regex_match(str111, matchResult, regex_))
-	
-	{
-		for (size_t i = 0; i < matchResult.size(); ++i)
-		{
-			strTag = matchResult[i];
-			//std::cout << strTag << std::endl;
-		}
-	}
-	/*string str222 = "I'm ChenLin,1988 is my birth year";
-	string regex_str2(".*(\\d{4}).*");
-	regex pattern2(regex_str2, regex::icase);
-	if (regex_match(str222, matchResult, pattern2)){
-		if (matchResult.size()>1)
-			strTag = matchResult[1];
-		 
-	}*/
-	printf("%s\n", strTag.c_str());
-
-
+	//初始化
 	initSys();
-	/*GET_PLAYS->addPlay(CPlaySound::begin);
-	GET_PLAYS->addPlay(CPlaySound::end);*/
-	
-	//设置回调
-	GET_NFC->setCallbackFun(CCurl::logninFunction);
+		
+	//设置NFC响应回调
+	GET_NFC->setCallbackFun(CCurl::signinFunction);
+
 	//开启NFC读卡器
 	if (GET_NFC->openDev()){		 
-	  
-	}
-	  
+		GET_CURL->init();
+		GET_PLAYS->init();	  
+	}	 
 
 	getchar();
 	GET_NFC->freeInstance();
@@ -141,6 +104,20 @@ std::wstring Utf82Unicode(const std::string& utf8string)
 	}
 	return std::wstring(&resultstring[0]);
 }
+/*宽字节转utf-8 */
+std::string WStringToUTF_8(const wchar_t* lpwcszWString)
+{
+	char* pElementText;
+	int iTextLen;
+	// wide char to multi char
+	iTextLen = ::WideCharToMultiByte(CP_UTF8, 0, lpwcszWString, wcslen(lpwcszWString), NULL, 0, NULL, NULL);
+	pElementText = new char[iTextLen + 1];
+	memset((void*)pElementText, 0, (iTextLen + 1) * sizeof(char));
+	::WideCharToMultiByte(CP_UTF8, 0, lpwcszWString, wcslen(lpwcszWString), pElementText, iTextLen, NULL, NULL);
+	std::string strReturn(pElementText);
+	delete[] pElementText;
+	return strReturn;
+}
 //utf-8 转 ascii  
 std::string UTF_82ASCII(std::string& strUtf8Code)
 {
@@ -150,3 +127,53 @@ std::string UTF_82ASCII(std::string& strUtf8Code)
 	std::string strRet = WStringToMBytes(wstr.c_str());
 	return strRet;
 }
+
+// ascii 转 utf-8
+std::string ASCII2UTF_8(std::string& strASCIICode)
+{
+	//先把 utf8 转为 unicode  
+	std::wstring wstr = MBytesToWString(strASCIICode.c_str());
+	//最后把 unicode 转为 ascii  
+	std::string strRet = WStringToUTF_8(wstr.c_str());
+	return strRet;
+}
+
+std::string  G2U(const char* gb2312)
+{
+	int len = MultiByteToWideChar(CP_ACP, 0, gb2312, -1, NULL, 0);
+	wchar_t* wstr = new wchar_t[len + 1];
+	memset(wstr, 0, len + 1);
+	MultiByteToWideChar(CP_ACP, 0, gb2312, -1, wstr, len);
+	len = WideCharToMultiByte(CP_UTF8, 0, wstr, -1, NULL, 0, NULL, NULL);
+	char* str = new char[len + 1];//需要在外面析构，可以改成传指针进来的方式
+	memset(str, 0, len + 1);
+	WideCharToMultiByte(CP_UTF8, 0, wstr, -1, str, len, NULL, NULL);
+	if (wstr) delete[] wstr;
+	std::string strR = str;
+	if (str) delete[] str;
+	return strR;
+}
+//const char* UTF8_To_GBK(const char* source, char* pcDes)
+//{
+//	enum { GB2312 = 936 };
+//	//unsigned long len;
+//	int len = -1;
+//	len = ::MultiByteToWideChar(CP_UTF8, NULL, source, -1, NULL, NULL);
+//	if (len == 0)
+//		return NULL;
+//	wchar_t *wide_char_buffer = new wchar_t[len];
+//	::MultiByteToWideChar(CP_UTF8, NULL, source, -1, wide_char_buffer, len);
+//	len = ::WideCharToMultiByte(GB2312, NULL, wide_char_buffer, -1, NULL, NULL, NULL, NULL);
+//	if (len == 0)
+//	{
+//		delete[] wide_char_buffer;
+//		return NULL;
+//	}
+//	char *multi_byte_buffer = new char[len];
+//	::WideCharToMultiByte(GB2312, NULL, wide_char_buffer, -1, multi_byte_buffer, len, NULL, NULL);
+//	strcpy_s(pcDes, multi_byte_buffer);
+//	//std::string dest(multi_byte_buffer);
+//	delete[] multi_byte_buffer;
+//	delete[] wide_char_buffer;
+//	return pcDes;
+//}

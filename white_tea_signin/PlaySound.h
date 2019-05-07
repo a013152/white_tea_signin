@@ -20,6 +20,7 @@ class CPlaySound
 	HANDLE			m_hShutdownEvent;				//关闭线程事件
 	HANDLE			m_hPlayEvent;					//读线程事件
 	HANDLE			m_hEventArray[2];				//线程事件数组
+	CRITICAL_SECTION   m_csSync;       //互斥操作 
 
 public:
 	enum soundType{
@@ -38,5 +39,6 @@ public:
 	~CPlaySound();
 	HANDLE getShutdownEvent(){ return m_hShutdownEvent; }
 	void addPlay(soundType type_);  //播放音频文件
+	void init();
 };
 

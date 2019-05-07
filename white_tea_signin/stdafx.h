@@ -26,7 +26,8 @@ extern std::string g_strAppDir;   //目录
 extern std::string g_strAppSetIniPath;  //配置文件路径
 void initSys();
 std::string UTF_82ASCII(std::string& strUtf8Code);
-
+std::string ASCII2UTF_8(std::string& strASCIICode);
+std::string  G2U(const char* gb2312);
 typedef void(*CALLBACK_FUN)(const char*);
 
 #define  TIME_INTERVEAL 200

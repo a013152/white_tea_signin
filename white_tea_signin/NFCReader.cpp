@@ -2,6 +2,7 @@
 #include "NFCReader.h"
 #include <minwindef.h>
 #include "Log.h"
+#include "PlaySound.h"
 
 
 
@@ -224,7 +225,7 @@ std::string CNFCReader::readNfc()
 	bool flag5 = (bytesBuffer2[len2++] == 0x44); //The factory default data of NTAG203
 	bool flag6 = (bytesBuffer2[len2++] == 0x03);
 
-	len1 = bytesBuffer2[len2++]; //长度
+	len1 = bytesBuffer2[len2++]; //长度 
 
 	memcpy(&bytesBuffer1[0], &bytesBuffer2[len2], len1);//
 
@@ -244,25 +245,41 @@ std::string CNFCReader::readNfc()
 	bool flag11 = (bytesBuffer1[3] == 0x55); //The URI record type (“U”)
 	bool flag12 = (bytesBuffer1[4] == UriIdentifierCode);
 
+	//判断类型 Url / Txt
+	int indexPayload = 0;
+	if (0x55 == bytesBuffer1[3]){
+		//url 逻辑
+		indexPayload = 5;
 
-	BYTE bytePayload[200] = { 0 };
-	memcpy(bytePayload, &bytesBuffer1[5], uriFieldLen);
-	int index1 = 0;
-	while (bytePayload[index1] == 0x0)
-	{
-		index1++;
+	}
+	else if (0x54 == bytesBuffer1[3]){
+		//txt
+		indexPayload = 5;
+	}
+	else if(0x54 == bytesBuffer1[4]){
+		//txt
+		indexPayload = 7;
 	}
 
-	str += string((char*)&bytePayload[index1]);
+	if (uriFieldLen != -1){
+		BYTE bytePayload[256] = { 0 };
+		memcpy(bytePayload, &bytesBuffer1[indexPayload], uriFieldLen);
+		int index1 = 0;
+		while (bytePayload[index1] == 0x0)
+		{
+			index1++;
+		}
+
+		str += string((char*)&bytePayload[index1]);		
+	}	
 	//========================== Success Tips ==========================
 	printf("读取到%s\n请拿开nfc卡\n",str.c_str());
-	//m_static_tips2.SetWindowText(str);
-	Sys_SetBuzzer(g_hDevice, 10); //Beep 100ms
+	Sys_SetBuzzer(g_hDevice, 10); //Beep 100ms	
+	//========================== do logic ==========================		
 	Sleep(110);
 	carPreData = str;
 	GET_LOG->logInfo(infoLog, "读取到nfc信息：%s", str.c_str());
 	doAnalyzeNFC(str);
-	
 	return str;
 }
 
@@ -281,6 +298,8 @@ int CNFCReader::OnTimer(int id, int iParam, string str)
 
 void CNFCReader::doAnalyzeNFC(const string inputStr)
 {
+	// 播放提示音 开始签到请稍等
+	GET_PLAYS->addPlay(CPlaySound::begin);
 	//使用正则表达式判断
 	std::regex regex_(strConPattern2.c_str(), regex::icase);
 	
@@ -302,9 +321,7 @@ void CNFCReader::doAnalyzeNFC(const string inputStr)
 		}
 	}
 	else{
-		//未匹配
-	}
-
-	
-	
+		// 播放提示音 不是有效的采茶证件
+		GET_PLAYS->addPlay(CPlaySound::fail2_invalid);
+	} 
 }

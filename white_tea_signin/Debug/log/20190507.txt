@@ -1,0 +1,112 @@
+08:50:19[debug]:App start! 
+08:50:19[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+08:50:23[info]:读取到nfc信息：zh-CNC-00001-2
+08:50:26[error]:10-103解析json错误,没有找到request_url:{"data":false,"info":"container no \u4e0d\u80fd\u4e3a\u7a7a\u3002","status":40000}
+08:50:26[error]:13-101签到失败，40000, info：container no 不能为空。
+08:52:08[info]:读取到nfc信息：zh-CNC-00001-2
+08:53:12[error]:9-100 curlAPI执行错误码:28 ,错误信息 Timeout was reached
+08:53:37[error]:13-100 captureRequest执行curlAPI错误：2
+08:53:45[info]:读取到nfc信息：zh-CNC-00001-2
+08:53:48[error]:10-103解析json错误,没有找到request_url:{"data":false,"info":"container no \u4e0d\u80fd\u4e3a\u7a7a\u3002","status":40000}
+08:53:48[error]:13-101签到失败，40000, info：container no 不能为空。
+09:01:04[debug]:App start! 
+09:01:04[error]:10-103解析json错误,没有找到request_url:{"data":"","status":40000,"info":"The serial field is required."}
+09:01:04[error]:12-101抓拍失败，40000, info：The serial field is required.
+09:01:21[debug]:App start! 
+09:01:22[error]:10-103解析json错误,没有找到request_url:{"data":"","status":40000,"info":"The serial field is required."}
+09:01:22[error]:12-101抓拍失败，40000, info：The serial field is required.
+09:01:36[debug]:App start! 
+09:02:52[debug]:App start! 
+09:03:29[debug]:App start! 
+09:21:20[debug]:App start! 
+09:21:20[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+09:21:24[info]:读取到nfc信息：zh-CNC-00001-2
+09:21:58[error]:10-103解析json错误,没有找到request_url:{"data":{"data":false},"info":"\u672a\u767b\u5f55","status":50014}
+09:22:46[error]:13-101签到失败，50014, info：未登录
+09:22:49[debug]:App start! 
+09:22:49[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+09:23:04[debug]:App start! 
+09:23:04[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+09:23:08[info]:读取到nfc信息：zh-CNC-00001-2
+09:23:17[error]:10-103解析json错误,没有找到request_url:{"data":false,"info":"container no \u4e0d\u80fd\u4e3a\u7a7a\u3002","status":40000}
+09:23:26[error]:13-101签到失败，40000, info：container no 不能为空。
+09:23:47[info]:读取到nfc信息：zh-CNC-00001-2
+09:24:26[debug]:App start! 
+09:24:26[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+09:25:00[debug]:App start! 
+09:25:01[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+09:25:03[info]:读取到nfc信息：zh-CNC-00001-2
+09:25:21[error]:10-103解析json错误,没有找到request_url:{"data":false,"info":"container no \u4e0d\u80fd\u4e3a\u7a7a\u3002","status":40000}
+09:25:51[debug]:App start! 
+09:25:52[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+09:25:54[info]:读取到nfc信息：zh-CNC-00001-2
+09:25:56[error]:10-103解析json错误,没有找到request_url:{"data":false,"info":"container no \u5fc5\u987b\u662f\u4e00\u4e2a\u6570\u7ec4\u3002","status":40000}
+09:31:06[debug]:App start! 
+09:31:06[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+09:31:07[error]:10-103解析json错误,没有找到request_url:{"data":false,"info":"account \u4e0d\u80fd\u4e3a\u7a7a\u3002","status":40000}
+09:31:09[info]:读取到nfc信息：zh-CNC-00001-2
+09:31:52[debug]:App start! 
+09:31:52[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+09:31:55[info]:读取到nfc信息：zh-CNC-00001-2
+09:31:57[error]:10-103解析json错误,没有找到request_url:{"data":false,"info":"container no \u5fc5\u987b\u662f\u4e00\u4e2a\u6570\u7ec4\u3002","status":40000}
+09:32:04[error]:13-101签到失败，40000, info：container no 必须是一个数组。
+09:32:13[debug]:App start! 
+09:32:13[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+09:32:16[info]:读取到nfc信息：zh-CNC-00001-2
+09:32:18[error]:10-103解析json错误,没有找到request_url:{"data":false,"info":"camera devices id \u4e0d\u80fd\u4e3a\u7a7a\u3002","status":40000}
+09:36:38[error]:13-101签到失败，40000, info：camera devices id 不能为空。
+09:37:34[debug]:App start! 
+09:37:34[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+09:37:37[info]:读取到nfc信息：zh-CNC-00001-2
+09:37:39[error]:10-103解析json错误,没有找到request_url:{"data":false,"info":"container no \u4e0d\u80fd\u4e3a\u7a7a\u3002","status":40000}
+09:45:40[debug]:App start! 
+09:45:40[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+09:45:42[info]:读取到nfc信息：zh-CNC-00001-2
+09:45:44[error]:10-103解析json错误,没有找到request_url:{"data":false,"info":"container no \u4e0d\u80fd\u4e3a\u7a7a\u3002","status":40000}
+09:47:00[debug]:App start! 
+09:47:00[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+09:47:02[info]:读取到nfc信息：zh-CNC-00001-2
+09:47:04[error]:9-100 curlAPI执行错误码:2 ,错误信息 Failed initialization
+09:47:08[error]:13-100 captureRequest执行curlAPI错误：2
+09:47:15[info]:读取到nfc信息：zh-CNC-00001-2
+09:47:18[error]:10-103解析json错误,没有找到request_url:{"data":false,"info":"container no \u4e0d\u80fd\u4e3a\u7a7a\u3002","status":40000}
+09:47:26[error]:13-101签到失败，40000, info：container no 不能为空。
+09:55:29[debug]:App start! 
+09:55:29[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+09:55:33[info]:读取到nfc信息：zh-CNC-00001-2
+09:55:34[error]:10-103解析json错误,没有找到request_url:{"data":false,"info":"camera devices id \u4e0d\u80fd\u4e3a\u7a7a\u3002","status":40000}
+09:56:28[error]:13-101签到失败，40000, info：camera devices id 不能为空。
+09:56:36[info]:读取到nfc信息：zh-CNC-00001-2
+09:56:37[error]:10-103解析json错误,没有找到request_url:{"data":false,"info":"camera devices id \u4e0d\u80fd\u4e3a\u7a7a\u3002","status":40000}
+09:56:37[error]:13-101签到失败，40000, info：camera devices id 不能为空。
+09:59:37[debug]:App start! 
+09:59:37[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+09:59:40[info]:读取到nfc信息：zh-CNC-00001-2
+09:59:40[error]:10-103解析json错误,没有找到request_url:{"data":false,"info":"camera devices id \u4e0d\u80fd\u4e3a\u7a7a\u3002","status":40000}
+09:59:40[error]:13-101签到失败，40000, info：camera devices id 不能为空。
+10:08:20[debug]:App start! 
+10:08:20[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+10:08:23[info]:读取到nfc信息：zh-CNC-00001-2
+10:14:28[debug]:App start! 
+10:18:25[debug]:App start! 
+10:18:56[debug]:App start! 
+10:56:22[debug]:App start! 
+10:56:22[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+10:56:25[info]:读取到nfc信息：zh-CNC-00001-2
+10:56:55[error]:10-103解析json错误,没有找到request_url:{"data":false,"info":"path.0 \u4e0d\u80fd\u4e3a\u7a7a\u3002","status":40000}
+10:57:18[error]:13-101签到失败，40000, info：path.0 不能为空。	参数{"append_shops_id":9,"camera_devices_id":20,"container_no":["C-00001-2"],"path":[""],"shop_plants_id":2,"shop_processes_id":22}
+
+11:00:27[info]:正常结束播放工作，线程退出。
+11:00:31[debug]:App start! 
+11:00:31[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+11:00:33[info]:读取到nfc信息：zh-CNC-00001-2
+11:00:34[error]:10-103解析json错误,没有找到request_url:{"data":false,"info":"path.0 \u4e0d\u80fd\u4e3a\u7a7a\u3002","status":40000}
+11:00:34[error]:13-101签到失败，40000, info：path.0 不能为空。	参数{"append_shops_id":9,"camera_devices_id":20,"container_no":["C-00001-2"],"path":[""],"shop_plants_id":2,"shop_processes_id":22}
+
+11:00:51[info]:读取到nfc信息：zh-CNC-00001-2
+11:01:03[debug]:App start! 
+11:01:03[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+11:01:08[info]:读取到nfc信息：zh-CNC-00001-2
+11:01:16[error]:13-101签到失败，40001, info：存在容器已签到,请勿重复签到	参数{"append_shops_id":9,"camera_devices_id":20,"container_no":["C-00001-2"],"path":["camera/mZ9wjCJOsxnI15WgCBOwHLZHjpyjFP6olTVRjvhR4N?watermark/2/text/57qs5bqmOjI3LjMwNjM5Oee7j-W6pjoxMTkuOTY0MzU06auY5bqmOjUxNS4xMjA2NjYK5Yy65Z-fOuS4reWbveemj-W7uuemj-m8jg==/font/5b6u6L2v6ZuF6buR/fontsize/400/fill/I2ZmZmZmZg==/dissolve/100/gravity/NorthWest/dx/30/dy/90/"],"shop_plants_id":2,"shop_processes_id":22}
+
+11:07:39[info]:正常结束播放工作，线程退出。

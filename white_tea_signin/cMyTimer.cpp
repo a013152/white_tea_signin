@@ -120,7 +120,7 @@ bool cMyTimer::TimerRun()
 		if (timeNow-it->timeLastRun >= it->timeElapce)  //判断时间间隔
 		{
 			it->timeLastRun = timeNow;
-			if(OnTimer(it->id,it->iParam,it->strParam) == 0)
+			if(OnTimer(it->id,it->iParam,it->strParam) == 0) //子类实现的定时器函数
 			{
 				//删除定时器
 				it->bDel = true;
