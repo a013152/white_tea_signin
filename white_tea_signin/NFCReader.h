@@ -33,7 +33,9 @@ public:
 
 	~CNFCReader(); 
 
-	bool openDev();
+	void init();
+
+	bool openDev( bool logInfo_ = true);
 
 	string readNfc();
 

@@ -15,12 +15,13 @@ int _tmain(int argc, _TCHAR* argv[])
 {	
 	//初始化
 	initSys();
-		
+
+	GET_NFC->init();
 	//设置NFC响应回调
 	GET_NFC->setCallbackFun(CCurl::signinFunction);
 
 	//开启NFC读卡器
-	if (GET_NFC->openDev()){		 
+	if (GET_NFC->openDev(true)){		 
 		GET_CURL->init();
 		GET_PLAYS->init();	  
 	}	 

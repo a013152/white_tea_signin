@@ -1,0 +1,48 @@
+08:53:48[debug]:App start! 
+08:53:48[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+08:59:10[debug]:App start! 
+08:59:10[error]:打开NFC读卡器失败！
+08:59:26[debug]:App start! 
+08:59:27[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+08:59:33[error]:查询nfc超时，请重新连接nfc读卡器!
+09:00:06[info]:正常结束播放工作，线程退出。
+09:00:16[debug]:App start! 
+09:00:16[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+09:00:20[error]:查询nfc超时，请重新连接nfc读卡器!
+09:04:03[debug]:App start! 
+09:04:03[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+09:04:08[error]:查询nfc超时，请重新连接nfc读卡器!
+09:14:11[debug]:App start! 
+09:14:11[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+09:14:14[error]:查询nfc超时，请重新连接nfc读卡器!
+09:16:45[debug]:App start! 
+09:16:45[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+09:16:48[error]:查询nfc超时，请重新连接nfc读卡器!
+09:17:58[debug]:App start! 
+09:17:58[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+09:18:00[error]:查询nfc超时，请重新连接nfc读卡器!
+09:20:00[debug]:App start! 
+09:20:00[error]:打开NFC读卡器失败！
+09:20:17[debug]:App start! 
+09:20:17[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+09:20:24[error]:查询nfc超时，请重新连接nfc读卡器!
+09:21:39[debug]:App start! 
+09:21:39[error]:打开NFC读卡器失败！
+09:21:42[debug]:App start! 
+09:21:42[error]:打开NFC读卡器失败！
+09:21:48[debug]:App start! 
+09:21:48[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+09:26:59[debug]:App start! 
+09:26:59[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+09:27:02[error]:查询nfc超时，请重新连接nfc读卡器!
+09:27:54[info]:正常结束播放工作，线程退出。
+09:29:04[debug]:App start! 
+09:29:04[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+09:29:04[error]:打开NFC读卡器失败！
+09:29:46[error]:访问nfc超时，请重新连接nfc读卡器!
+09:29:49[debug]:App start! 
+09:29:49[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+09:29:49[error]:打开NFC读卡器失败！
+09:30:08[debug]:App start! 
+09:30:08[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+09:30:10[error]:访问nfc超时，请重新连接nfc读卡器!

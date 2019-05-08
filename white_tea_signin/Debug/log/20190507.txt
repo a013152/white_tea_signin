@@ -110,3 +110,20 @@
 11:01:16[error]:13-101签到失败，40001, info：存在容器已签到,请勿重复签到	参数{"append_shops_id":9,"camera_devices_id":20,"container_no":["C-00001-2"],"path":["camera/mZ9wjCJOsxnI15WgCBOwHLZHjpyjFP6olTVRjvhR4N?watermark/2/text/57qs5bqmOjI3LjMwNjM5Oee7j-W6pjoxMTkuOTY0MzU06auY5bqmOjUxNS4xMjA2NjYK5Yy65Z-fOuS4reWbveemj-W7uuemj-m8jg==/font/5b6u6L2v6ZuF6buR/fontsize/400/fill/I2ZmZmZmZg==/dissolve/100/gravity/NorthWest/dx/30/dy/90/"],"shop_plants_id":2,"shop_processes_id":22}
 
 11:07:39[info]:正常结束播放工作，线程退出。
+15:22:21[debug]:App start! 
+15:22:21[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+15:22:31[info]:读取到nfc信息：zh-CNA-00001-2
+15:22:41[error]:9-100 curlAPI执行错误码:28 ,错误信息 Timeout was reached
+15:22:41[error]:12-100 captureRequest执行curlAPI错误：2
+15:23:38[info]:正常结束播放工作，线程退出。
+15:23:41[debug]:App start! 
+15:23:41[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
+15:24:28[info]:读取到nfc信息：zh-CNA-00001-2
+15:24:32[error]:13-101签到失败，40001, info：存在容器已签到,请勿重复签到	参数{"append_shops_id":9,"camera_devices_id":20,"container_no":["A-00001-2"],"path":["camera/HE1wbJNy3UYMbT6ODLgBWbrnqspEwsfFwWME3ofDr0?watermark/2/text/57qs5bqmOjI3LjMwNjM5Oee7j-W6pjoxMTkuOTY0MzU06auY5bqmOjUxNS4xMjA2NjYK5Yy65Z-fOuS4reWbveemj-W7uuemj-m8jg==/font/5b6u6L2v6ZuF6buR/fontsize/400/fill/I2ZmZmZmZg==/dissolve/100/gravity/NorthWest/dx/30/dy/90/"],"shop_plants_id":2,"shop_processes_id":22}
+
+15:24:50[info]:读取到nfc信息：zh-CNA-00001-2
+15:24:52[error]:13-101签到失败，40001, info：存在容器已签到,请勿重复签到	参数{"append_shops_id":9,"camera_devices_id":20,"container_no":["A-00001-2"],"path":["camera/npPlxTdW9Z5tOerb8opbgaNP8yx6rQE8CokegmnONH?watermark/2/text/57qs5bqmOjI3LjMwNjM5Oee7j-W6pjoxMTkuOTY0MzU06auY5bqmOjUxNS4xMjA2NjYK5Yy65Z-fOuS4reWbveemj-W7uuemj-m8jg==/font/5b6u6L2v6ZuF6buR/fontsize/400/fill/I2ZmZmZmZg==/dissolve/100/gravity/NorthWest/dx/30/dy/90/"],"shop_plants_id":2,"shop_processes_id":22}
+
+15:25:00[info]:读取到nfc信息：zh-CNA-00001-2
+15:25:02[error]:13-101签到失败，40001, info：存在容器已签到,请勿重复签到	参数{"append_shops_id":9,"camera_devices_id":20,"container_no":["A-00001-2"],"path":["camera/9ihXkjNrfx1PWnyQMIuRsbCuPokIQGrmL05tcKz8v8?watermark/2/text/57qs5bqmOjI3LjMwNjM5Oee7j-W6pjoxMTkuOTY0MzU06auY5bqmOjUxNS4xMjA2NjYK5Yy65Z-fOuS4reWbveemj-W7uuemj-m8jg==/font/5b6u6L2v6ZuF6buR/fontsize/400/fill/I2ZmZmZmZg==/dissolve/100/gravity/NorthWest/dx/30/dy/90/"],"shop_plants_id":2,"shop_processes_id":22}
+

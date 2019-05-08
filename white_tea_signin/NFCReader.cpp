@@ -48,7 +48,16 @@ CNFCReader::~CNFCReader()
 	
 }
  
-bool CNFCReader::openDev()
+void CNFCReader::init()
+{
+	AddTimer(Timer_Read_NFC, tempInterval);
+	printf("NFC读取卡器就绪!\n");
+	double tempf = tempInterval / 1000.0;
+	GET_LOG->logInfo(infoLog, "NFC读取卡器就绪,启动定时器%0.1f秒读取！", tempf);//%w.hf表示输出的总宽度是w小数点后保留h位
+
+}
+
+bool CNFCReader::openDev( bool logInfo_ /*= true*/)
 {
 	int status;
 
@@ -60,8 +69,11 @@ bool CNFCReader::openDev()
 		status = Sys_Close(&g_hDevice);
 		if (status != 0)
 		{
-			printf("关闭NFC读卡器失败 !\n");
-			GET_LOG->logInfo(errorLog, "关闭NFC读卡器失败！");
+			if (logInfo_)
+			{
+				printf("关闭NFC读卡器失败 !\n");
+				GET_LOG->logInfo(errorLog, "关闭NFC读卡器失败！");
+			}
 		}
 	}
 
@@ -69,8 +81,11 @@ bool CNFCReader::openDev()
 	status = Sys_Open(&g_hDevice, 0, 0x0416, 0x8020);
 	if (status != 0)
 	{
-		printf("打开NFC读卡器失败 !\n");
-		GET_LOG->logInfo(errorLog, "打开NFC读卡器失败！");
+		if (logInfo_)
+		{
+			printf("打开NFC读卡器失败 !\n");
+			GET_LOG->logInfo(errorLog, "打开NFC读卡器失败！");
+		}
 		return false;
 	}
 
@@ -80,8 +95,11 @@ bool CNFCReader::openDev()
 	status = Sys_SetAntenna(g_hDevice, 0);
 	if (status != 0)
 	{
-		printf("设置NFC读卡器启动探测失败 !\n");
-		GET_LOG->logInfo(errorLog, "设置NFC读卡器启动探测失败！");
+		if (logInfo_)
+		{
+			printf("设置NFC读卡器启动探测失败 !\n");
+			GET_LOG->logInfo(errorLog, "设置NFC读卡器启动探测失败！");
+		}
 		return false;
 	}
 	Sleep(5); //Appropriate delay after Sys_SetAntenna operating
@@ -90,8 +108,11 @@ bool CNFCReader::openDev()
 	status = Sys_InitType(g_hDevice, 'A');
 	if (status != 0)
 	{
-		printf("初始化NFC读卡器失败 !\n");
-		GET_LOG->logInfo(errorLog, "初始化NFC读卡器失败！");
+		if (logInfo_)
+		{
+			printf("初始化NFC读卡器失败 !\n");
+			GET_LOG->logInfo(errorLog, "初始化NFC读卡器失败！");
+		}
 		return false;
 	}
 	Sleep(5); //Appropriate delay after Sys_InitType operating
@@ -100,8 +121,11 @@ bool CNFCReader::openDev()
 	status = Sys_SetAntenna(g_hDevice, 1);
 	if (status != 0)
 	{
-		printf("设置NFC读卡器启动探测失败 !\n");
-		GET_LOG->logInfo(errorLog, "设置NFC读卡器启动探测失败！");
+		if (logInfo_)
+		{
+			printf("设置NFC读卡器启动探测失败 !\n");
+			GET_LOG->logInfo(errorLog, "设置NFC读卡器启动探测失败！");
+		}
 		return false;
 	}
 	Sleep(5); //Appropriate delay after Sys_SetAntenna operating
@@ -111,18 +135,22 @@ bool CNFCReader::openDev()
 	status = Sys_SetBuzzer(g_hDevice, 20);
 	if (status != 0)
 	{
-		printf("设置NFC读卡器蜂鸣器失败 !\n");
-		GET_LOG->logInfo(errorLog, "设置NFC读卡器蜂鸣器失败！");
+		if (logInfo_)
+		{
+			printf("设置NFC读卡器蜂鸣器失败 !\n");
+			GET_LOG->logInfo(errorLog, "设置NFC读卡器蜂鸣器失败！");
+		}
 		return false;
 	}
 
 	//Tips
 	//printf("Connect reader succeed !\n");
-	
-	AddTimer(Timer_Read_NFC, tempInterval);
-	printf("NFC读取卡器就绪!\n");
-	double tempf = tempInterval / 1000.0;
-	GET_LOG->logInfo(infoLog, "NFC读取卡器就绪,启动定时器%0.1f秒读取！", tempf);//%w.hf表示输出的总宽度是w小数点后保留h位
+	//if (startTimer){
+		//AddTimer(Timer_Read_NFC, tempInterval);
+		//printf("NFC读取卡器就绪!\n");
+		//double tempf = tempInterval / 1000.0;
+		//GET_LOG->logInfo(infoLog, "NFC读取卡器就绪,启动定时器%0.1f秒读取！", tempf);//%w.hf表示输出的总宽度是w小数点后保留h位
+	//}
 	return true;
 }
 
@@ -150,7 +178,18 @@ std::string CNFCReader::readNfc()
 	//Check whether the reader is connected or not
 	if (FALSE == Sys_IsOpen(g_hDevice))
 	{
-		printf("请先打开nfc读卡器!\n");
+		if (openDev(false) == false)
+		{
+			if (carPreStatus == 196)
+				return "";
+			carPreStatus = 196;
+			printf("打开失败，请先连接读卡器!\n");
+		}
+		else{
+			carPreStatus = 0;
+			memset(carPreUID, 0, 7);
+			carPreData.clear();
+		}
 		return "";
 	}
 
@@ -167,12 +206,28 @@ std::string CNFCReader::readNfc()
 			return "";
 		}
 	}
+	if (status == 196){
+		//数据传输超时
+		if (carPreStatus != status){
+			carPreStatus = status;
+			GET_LOG->logInfo(errorLog, "访问读卡器超时，请重新连接nfc读卡器!");
+			printf("访问读卡器超时，请重新连接nfc读卡器!\n", status);
+			return "";
+		}
+		else{
+			//openDev(false, false);
+			g_hDevice = HID_DEVICE(-1);
+			return "";
+		}
+		
+
+	}
 	if (status != 0)
 	{
 		if (status == 20)
-			printf("请放入NFC卡……!\n");
+			printf("访问读卡器成功，请放入NFC卡……!\n");
 		else 
-			printf("查询nfc卡失败，错误码%d!\n",status);
+			printf("查询NFC卡失败，错误码%d!\n",status);
 		return "";
 	}
 	carPreStatus = status;
