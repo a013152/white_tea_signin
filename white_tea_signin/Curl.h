@@ -51,6 +51,10 @@ private:
 	virtual int OnTimer(int id, int iParam = 0, string str = "");
 	//curl 处理函数 API, 返回0执行成功
 	int curlAPI(stResultJson* result_, const char* szUrl, const char* szPostField, const char* szToken_ = NULL);  
+
+
+	
+
 	//解析结果
 	void parseJsonResult(const char* strData, stResultJson* result_);
 
@@ -59,6 +63,7 @@ private:
 	
 
 public:
+	
 	//pthis调用接口
 
 	size_t callBack(void *ptr, size_t size, size_t nmemb, void *stream);  //curl 响应回调函数 内存赋值
@@ -79,6 +84,9 @@ public:
 	static size_t callBack_(void *ptr, size_t size, size_t nmemb, void *stream);//curl 响应回调函数
 	
 	static void signinFunction(const char* szData);  //签到回调函数，用于nfc读卡器响应
+
+	//curl 处理函数 API, 返回0执行成功，上传文件
+	int curlAPI( stResultJson& result_, const char* szUrl, const char* szFilePath, const char* szWatermark, const char* szToken_ = NULL);
 
 	
 	

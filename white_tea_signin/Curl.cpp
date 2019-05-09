@@ -87,6 +87,20 @@ int CCurl::curlAPI(stResultJson* result_, const char* szUrl, const char* szPostF
 	curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, strlen(szPostField));  //-data 数据
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, callBack_);
 
+	//struct curl_httppost *post = NULL;
+	//struct curl_httppost *last = NULL;	
+	//curl_formadd(&post, &last, 
+	//	CURLFORM_COPYNAME, "image",                     //此处表示要传的参数名
+	//	CURLFORM_FILE, "/tmp/ab/face.jpg",                //此处表示图片文件的路径	
+	//	//CURLFORM_CONTENTTYPE, "image/jpeg",
+	//	CURLFORM_END);
+	//curl_formadd(&post, &last, 
+	//	CURLFORM_COPYNAME, "body",                           //此处为别的参数
+	//	CURLFORM_COPYCONTENTS, szJsonData,             //要上传的json字符串	
+	//	CURLFORM_END				);
+		
+
+
 	recIndex = 0;
 	memset(recBuffer, 0, MAX8192);
 
@@ -107,6 +121,76 @@ int CCurl::curlAPI(stResultJson* result_, const char* szUrl, const char* szPostF
 	return returnValue;
 	
 }
+
+int CCurl::curlAPI( stResultJson& result_, const char* szUrl, const char* szFilePath, const char* szWatermark, const char* szToken_ /*= NULL*/)
+{
+	int returnValue = 1;
+	if (curl == NULL)
+		return returnValue;
+	curl_easy_setopt(curl, CURLOPT_URL, szUrl); //url
+	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, true);  //检测域名
+	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
+	struct curl_slist *headers = NULL;
+	curl_easy_setopt(curl, CURLOPT_HEADER, 0); //将响应头信息和相应体一起传给write_data  
+	//headers = curl_slist_append(headers, "Content-Type:application/form-data");
+	////headers = curl_slist_append(headers, "Content-type: application/x-www-form-urlencoded;charset=UTF-8");  //用json格式发送post 参数
+	headers = curl_slist_append(headers, "Accept-Encoding: gzip, deflate"); //读取大文件时设置
+	headers = curl_slist_append(headers, "Accept: application/json");  //返回json格式
+	headers = curl_slist_append(headers, "Cache-Control: no-cache");
+	headers = curl_slist_append(headers, "Pragma: no-cache");
+	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, callBack_);
+
+	//if (szToken_ != NULL)
+	//{
+	//	char szTemp[1024] = { 0 };
+	//	sprintf_s(szTemp, "Authorization: Bearer %s", szToken);   //增加token
+	//	headers = curl_slist_append(headers, szTemp);
+	//}
+	//curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers); //	
+	curl_easy_setopt(curl, CURLOPT_TIMEOUT, 10L);//设置超时时间	
+
+	//设置上传文件 
+	struct curl_httppost *post = NULL;
+	struct curl_httppost *last = NULL;
+	
+	curl_formadd(&post, &last,
+		CURLFORM_COPYNAME, "file",                     //此处表示要传的参数名	
+		CURLFORM_FILE, szFilePath,                //此处表示图片文件的路径
+		CURLFORM_CONTENTTYPE, "image/png",
+		//CURLFORM_CONTENTTYPE, "image/jpg",
+		CURLFORM_END);
+
+	curl_formadd(&post, &last,
+		//CURLFORM_COPYNAME, "watermark",                           //此处为别的参数
+		//CURLFORM_COPYCONTENTS, watermark,             //要上传的json字符串
+		//CURLFORM_CONTENTLEN, strlen(watermark),
+		CURLFORM_PTRNAME, "watermark",
+		CURLFORM_PTRCONTENTS, szWatermark,
+		CURLFORM_END);
+
+	curl_easy_setopt(curl, CURLOPT_HTTPPOST, post);
+
+
+	recIndex = 0;
+	memset(recBuffer, 0, MAX8192);
+
+	CURLcode ret = curl_easy_perform(curl);
+	if (ret != CURLE_OK)
+	{
+		GET_LOG->logInfo(errorLog, "8-100 curlAPI上传执行错误码:%d ,错误信息 %s, 文件路径%s", ret, curl_easy_strerror(ret), szFilePath);
+		printf("curl执行错误码:%d ,错误信息 %s\n", ret, curl_easy_strerror(ret));
+		returnValue = 2;
+	}
+	else{
+		printf("curl执行成功\t");
+		parseJsonResult(recBuffer, &result_);
+		returnValue = 0;
+	}
+	curl_slist_free_all(headers);
+
+	return returnValue;
+}
+ 
 
 void CCurl::autoLogin()
 {
@@ -139,6 +223,7 @@ void CCurl::autoLogin()
 					}
 				}
 				printf("自动登陆成功，解析到shopid：%d, token：%s\n", shopID, szToken);
+				GET_LOG->logInfo(debugLog, "自动登陆成功，解析到shopid：%d", shopID);
 			}
 			else{
 				printf("自动登陆失败，%d, info：%s\n", stJson.iStatus, stJson.strInfo.c_str());
@@ -219,7 +304,7 @@ int CCurl::signinRequest(const char* szContainerID)
 	std::string strWrite = jsonWriter.write(wValue);
 	sprintf_s(szPostField, "%s", strWrite.c_str());
 
-	int returnValue = curlAPI(&stJson, szUrl, (szPostField), szToken);
+	int returnValue = curlAPI(&stJson, szUrl, szPostField, szToken);
 	if (returnValue == 0){
 		if (stJson.iStatus == 10000){
 			printf("签到成功：info=》%s\n", stJson.strInfo);
@@ -241,11 +326,20 @@ int CCurl::signinRequest(const char* szContainerID)
 //
 ////分析接口返回的json
 void CCurl::parseJsonResult(const char* strData, stResultJson* result_){
-
-	if (strcmp(strData, "[]") == 0 || strlen(strData) == 0){
+	unsigned int len1 = strlen(strData);
+	if (strcmp(strData, "[]") == 0 || len1 == 0){
 		//GET_LOG->logInfo(debugLog, "10-104解析json错误,没有找到info:%s", strData);
 		printf("10-104解析json错误,字符不符合:%s", strData);
 		return;
+	}
+	else if (len1 >= MAX8192){
+		std::string  strTemp = strData;
+		strTemp = strTemp.substr(0, 64);
+		//字符过长
+		printf("解析的字符长度超过8k:%s", strTemp.c_str());
+		GET_LOG->logInfo(errorLog, "解析的字符长度超过8k:%s...", strTemp.c_str());
+		return;
+
 	}
 	//使用cppJson解析
 	Json::Reader reader;
@@ -262,10 +356,10 @@ void CCurl::parseJsonResult(const char* strData, stResultJson* result_){
 				if (root["request_url"].isNull() == false && root["request_url"].isString()){
 					result_->strRequestUrl = root["request_url"].asString();
 				}
-				else{
+				/*else{
 					GET_LOG->logInfo(errorLog, "10-103解析json错误,没有找到request_url:%s", strData);
 					printf("10-103解析json错误,没有找到request_url:%s", strData);
-				}
+				}*/
 			}
 		}
 		else{

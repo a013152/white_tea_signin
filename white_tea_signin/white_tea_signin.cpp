@@ -7,15 +7,17 @@
 #include "Curl.h"
 #include "PlaySound.h"
 #include <iostream>
+#include <io.h>
 std::string g_strAppDir;
 std::string g_strAppSetIniPath;
 
-
+void testFun();
 int _tmain(int argc, _TCHAR* argv[])
 {	
 	//初始化
 	initSys();
 
+	//testFun();
 	GET_NFC->init();
 	//设置NFC响应回调
 	GET_NFC->setCallbackFun(CCurl::signinFunction);
@@ -178,3 +180,62 @@ std::string  G2U(const char* gb2312)
 //	delete[] wide_char_buffer;
 //	return pcDes;
 //}
+
+void testFun(){
+	stResultJson stJson; stJson.clearMem();
+	char szTemp[256] = { 0 }; sprintf_s(szTemp, "%s001.jpg",g_strAppDir.c_str());
+	if (_access(szTemp, 0) == -1){
+		printf("%s is not exist!\n", szTemp);
+		return;
+	}
+	int re = GET_CURL->curlAPI(stJson, "https://admin.tdneed.com/api/common/source/capture/upload", szTemp, "pc upload");
+	if (re == 0 && stJson.jsonVauleData.isNull() == false && stJson.jsonVauleData["url"].isNull() == false && stJson.jsonVauleData["url"].isString()){
+		printf("url:%s", stJson.jsonVauleData["url"].asCString());
+
+	}
+	return;
+
+	char *szPostField = "{\"watermark\":\"test watermark\"}";
+	char *watermark = "pc";
+	char *url = "https://admin.tdneed.com/api/common/source/capture/upload";
+	CURL *pCurl = NULL;
+	CURLcode res;
+	struct curl_slist *headerlist = NULL;
+	struct curl_httppost *post = NULL;
+	struct curl_httppost *last = NULL;
+	curl_formadd(&post, &last,
+		CURLFORM_COPYNAME, "file",                     //此处表示要传的参数名	
+		CURLFORM_FILE, "C:\\Users\\lenovo\\Desktop\\20171220152812132.png",                //此处表示图片文件的路径
+		CURLFORM_CONTENTTYPE, "image/png",
+		CURLFORM_END);
+	//curl_formadd(&post, &last,
+	//	CURLFORM_COPYNAME, "backImage",              //此处表示要传的参数名	
+	//	CURLFORM_FILE, "tmp/ab/background.jpg",     //此处表示图片文件的路径
+	//	//CURLFORM_CONTENTTYPE, "image/jpeg",					
+	//	CURLFORM_END);
+	curl_formadd(&post, &last,
+		//CURLFORM_COPYNAME, "watermark",                           //此处为别的参数
+		//CURLFORM_COPYCONTENTS, watermark,             //要上传的json字符串
+		//CURLFORM_CONTENTLEN, strlen(watermark),
+		CURLFORM_PTRNAME, "watermark",
+		CURLFORM_PTRCONTENTS, watermark,
+		CURLFORM_END);
+	pCurl = curl_easy_init();
+	if (NULL != pCurl)
+	{
+		//curl_easy_setopt(pCurl, CURLOPT_TIMEOUT, 5);		
+		curl_easy_setopt(pCurl, CURLOPT_URL, url);
+		curl_easy_setopt(pCurl, CURLOPT_SSL_VERIFYHOST, true);  //检测域名
+		curl_easy_setopt(pCurl, CURLOPT_SSL_VERIFYPEER, 0);
+		curl_easy_setopt(pCurl, CURLOPT_HTTPPOST, post);
+		//curl_easy_setopt(pCurl, CURLOPT_POSTFIELDS, szPostField);  //-data 数据
+		//curl_easy_setopt(pCurl, CURLOPT_POSTFIELDSIZE, strlen(szPostField));  //-data 数据
+		res = curl_easy_perform(pCurl);
+		if (res != CURLE_OK)
+		{
+			printf("curl_easy_perform() failed，error code is:%s\n",
+				curl_easy_strerror(res));
+		}
+		curl_easy_cleanup(pCurl);
+	}
+}
