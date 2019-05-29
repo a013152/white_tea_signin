@@ -31,6 +31,8 @@ public:
 		fail3_connect,  //网络异常
 		fail4_connect,  //连接服务器异常
 		fail5_already_signed,  //已经签到
+		fail6_autoLogin,  //自动登陆失败，连接异常
+		fail7_autoLogin,  //自动登陆失败，请查看日志错误码
 	};
 
 	static CPlaySound*getInstance();

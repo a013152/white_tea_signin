@@ -23,7 +23,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	GET_NFC->setCallbackFun(CCurl::signinFunction);
 
 	//¿ªÆôNFC¶Á¿¨Æ÷
-	if (GET_NFC->openDev(true)){		 
+	if (GET_NFC->openDev(true))
+	{		 
 		GET_CURL->init();
 		GET_PLAYS->init();	  
 	}	 

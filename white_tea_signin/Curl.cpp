@@ -6,7 +6,7 @@
 #include "PlaySound.h"
 
 CCurl* pthis = nullptr;
-CCurl::CCurl() :recIndex(0), shopID(0),processID(0)
+CCurl::CCurl() :recIndex(0), shopID(0), processID(0), processType(0)
 {
 	memset(recBuffer, 0, MAX8192);
 	memset(szToken, 0, MAX1024);
@@ -55,7 +55,7 @@ size_t CCurl::callBack(void *ptr, size_t size, size_t nmemb, void *stream)
 	recIndex += size*nmemb;
 	return size*nmemb;
 }
-//
+//获取解析用
 int CCurl::curlAPI(stResultJson* result_, const char* szUrl, const char* szPostField, const char* szToken_ /*= NULL*/)
 {
 	int returnValue = 1;
@@ -121,7 +121,7 @@ int CCurl::curlAPI(stResultJson* result_, const char* szUrl, const char* szPostF
 	return returnValue;
 	
 }
-
+//上传用
 int CCurl::curlAPI( stResultJson& result_, const char* szUrl, const char* szFilePath, const char* szWatermark, const char* szToken_ /*= NULL*/)
 {
 	int returnValue = 1;
@@ -221,17 +221,46 @@ void CCurl::autoLogin()
 							break;
 						}
 					}
+					//获取流程 列表
+					stJson.clearMem();
+					GetPrivateProfileString("url", "process", "https://team.tdneed.com/api/source/query/process/list", szUrl, MAX1024, g_strAppSetIniPath.c_str());
+					processType = GetPrivateProfileInt("set", "process_type", 3, g_strAppSetIniPath.c_str());
+					sprintf_s(szPostField, "{\"type\":\"%d\",\"append_shops_id\":\"%d\"}", processType, shopID);
+					returnValue = curlAPI(&stJson, szUrl, szPostField, szToken);
+					if (returnValue == 0){
+						bool flag = false;
+						if (false == stJson.jsonVauleData.isNull())  // reader将Json字符串解析到data_Json， 
+						{
+							if (stJson.iStatus == 10000){
+								if (stJson.jsonVauleData.isNull() == false && stJson.jsonVauleData.isArray()){
+									if (stJson.jsonVauleData.size() >= 1){
+										size_t i = 0;
+										if (stJson.jsonVauleData[i].isObject()&& stJson.jsonVauleData[i]["id"].isInt()){
+											processID = stJson.jsonVauleData[i]["id"].asInt();
+											flag = true;
+										}
+									}									
+								}
+							}
+						}
+						if (flag == false){
+							printf("获取流程未能解析,信息\n");
+						}
+
+					}
 				}
-				printf("自动登陆成功，解析到shopid：%d, token：%s\n", shopID, szToken);
-				GET_LOG->logInfo(debugLog, "自动登陆成功，解析到shopid：%d", shopID);
+				printf("自动登陆成功，解析到shopid：%d, processid:%d，token：%s\n", shopID, processID, szToken);
+				GET_LOG->logInfo(debugLog, "自动登陆成功，解析到shopid：%d processid:%d", shopID, processID);
 			}
 			else{
 				printf("自动登陆失败，%d, info：%s\n", stJson.iStatus, stJson.strInfo.c_str());
+				GET_PLAYS->addPlay(CPlaySound::fail7_autoLogin); //自动登陆失败，连接异常
 			} 
 		} 
 	}
 	else{
 		printf("11-100执行curlAPI错误：%d\n", returnValue);
+		GET_PLAYS->addPlay(CPlaySound::fail6_autoLogin); //自动登陆失败，请查看日志错误码
 	}
 }
 
@@ -282,8 +311,6 @@ int CCurl::signinRequest(const char* szContainerID)
 	signinId = GetPrivateProfileInt("set", "signin_id", 1,  g_strAppSetIniPath.c_str());
 	 
 	deviceID = GetPrivateProfileInt("set", "device_id", 1, g_strAppSetIniPath.c_str());
-
-	processID = GetPrivateProfileInt("set", "process_id", 1, g_strAppSetIniPath.c_str());
 	  
 	char szPostField[MAX1024] = { 0 }; 
 	/*sprintf_s(szPostField, "{\"container_no\":[\"%s\"],\"shop_plants_id\":\"%d\",\"append_shops_id\":\"%d\",\"camera_devices_id\":\"%d\",\"shop_processes_id\":\"%d\",\"path\":[\"%s\"]}",\
@@ -307,7 +334,7 @@ int CCurl::signinRequest(const char* szContainerID)
 	int returnValue = curlAPI(&stJson, szUrl, szPostField, szToken);
 	if (returnValue == 0){
 		if (stJson.iStatus == 10000){
-			printf("签到成功：info=》%s\n", stJson.strInfo);
+			printf("签到成功：info=》%s\n", stJson.strInfo.c_str());
 			returnValue = 0;
 		} 
 		else{
@@ -349,7 +376,7 @@ void CCurl::parseJsonResult(const char* strData, stResultJson* result_){
 		if (root["status"].isNull() == false && root["status"].isInt()){
 			result_->iStatus = root["status"].asInt();
 			if (result_->iStatus == 10000  ){
-				if (false == root["data"].isNull() && root["data"].isObject())
+				if (false == root["data"].isNull() /*&& root["data"].isObject()*/)
 					result_->jsonVauleData = root["data"];				
 			}
 			else{

@@ -34,7 +34,9 @@ class CCurl :public cMyTimer
 	string strAccount;		//调用php登陆接口需要使用//读取set.ini文件获取
 	string strPassword;		//调用php登陆接口需要使用//读取set.ini文件获取
 	char szToken[MAX1024];   //调用php接口需要使用token  //定时登陆获取
+	int processType;		//调用php获取流程接口需要使用type，  //读取set.ini文件获取
 	int shopID ;			//调用php签到接口需要使用append_shops_id，  //定时登陆获取
+	
 	int processID ;			//调用php签到接口需要使用shop_processes_id，  //读取set.ini文件获取
 	int deviceID;			//调用php签到接口需要使用camera_devices_id，  //读取set.ini文件获取
 	int signinId;			//调用php签到接口需要使用shop_plants_id	//读取set.ini文件获取
