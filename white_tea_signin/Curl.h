@@ -29,7 +29,6 @@ class CCurl :public cMyTimer
 	stResultJson stCurrentResult;  //当前返回的json
 	char recBuffer[MAX8192] ;//curl接收响应时内存容器。
 	size_t recIndex ;		//curl接收响应时内存游标。
-
 	int aotuLoginInterval;  //定时器：自动登陆
 	string strAccount;		//调用php登陆接口需要使用//读取set.ini文件获取
 	string strPassword;		//调用php登陆接口需要使用//读取set.ini文件获取

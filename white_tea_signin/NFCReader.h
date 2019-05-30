@@ -20,6 +20,8 @@ class CNFCReader:public cMyTimer
 
 	int tempInterval;
 
+	bool b_debugPrintf;
+
 	string strPattern = "[\\s\\S]*shop.tdneed.com[\\s\\S]*";
 	string strConPattern = "[\\s\\S]*[A-Z]-[0-9]{5}-[0-9][\\s\\S]*";
 	string strURLPattern2 = "shop.tdneed.com[\\s\\S]*";
@@ -44,5 +46,7 @@ public:
 	virtual int OnTimer(int id, int iParam = 0, string str = "");
 
 	void doAnalyzeNFC(const string str);
+
+	void debugPrintf(const char* format, ...);
 };
 

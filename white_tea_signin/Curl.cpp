@@ -79,8 +79,15 @@ int CCurl::curlAPI(stResultJson* result_, const char* szUrl, const char* szPostF
 		sprintf_s(szTemp, "Authorization: Bearer %s", szToken);   //增加token
 		headers = curl_slist_append(headers, szTemp);
 	}
-	curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers); //	
-	curl_easy_setopt(curl, CURLOPT_TIMEOUT, 10L);//设置超时时间	
+	curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers); //	 
+	//curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L); //在屏幕打印请求连接过程和返回http数据
+	curl_easy_setopt(curl, CURLOPT_TIMEOUT, 20L);//接收数据时超时设置，如果10秒内数据未接收完，直接退出
+	curl_easy_setopt(curl, CURLOPT_AUTOREFERER, 1); // 以下3个为重定向设置
+	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1); //返回的头部中有Location(一般直接请求的url没找到)，则继续请求Location对应的数据 
+	curl_easy_setopt(curl, CURLOPT_MAXREDIRS, 1);//查找次数，防止查找太深
+	curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 5);//连接超时，这个数值如果设置太短可能导致数据请求不到就断开了
+
+
 	curl_easy_setopt(curl, CURLOPT_POST, 1);//设置CURLOPT_POST之后必须带有POST数据
 	//设置数据 
 	curl_easy_setopt(curl, CURLOPT_POSTFIELDS, szPostField);  //-data 数据
@@ -109,7 +116,7 @@ int CCurl::curlAPI(stResultJson* result_, const char* szUrl, const char* szPostF
 	{
 		GET_LOG->logInfo(errorLog,"9-100 curlAPI执行错误码:%d ,错误信息 %s", ret, curl_easy_strerror(ret));
 		printf("curl执行错误码:%d ,错误信息 %s\n", ret, curl_easy_strerror(ret));
-		returnValue = 2;
+		returnValue = ret;
 	}
 	else{
 		printf("curl执行成功\t");
@@ -280,6 +287,11 @@ int CCurl::captureRequest()
 	//sprintf_s(szPostField, "{\"serial\":\"%s\",\"watermark\":\"%s%s\"}", strCameraSerial.c_str(), G2U(strWatermark.c_str()).c_str(), G2U(strWatermark2.c_str()).c_str());
 	sprintf_s(szPostField, "{\"serial\":\"%s\",\"watermark\":\"%s\\n%s\"}", strCameraSerial.c_str(), G2U(strWatermark.c_str()).c_str(), G2U(strWatermark2.c_str()).c_str());
 	int returnValue = curlAPI(&stJson, szUrl, szPostField);
+	if (28 == returnValue){
+		printf("12-102captureRequest执行超时，再执行一次。\n");
+		GET_LOG->logInfo(errorLog, "captureRequest执行超时，再执行一次");
+		returnValue = curlAPI(&stJson, szUrl, szPostField);
+	}
 	if (returnValue == 0){
 		if (stJson.iStatus == 10000){
 			if (stJson.jsonVauleData["path"].isNull() == false && stJson.jsonVauleData["path"].isString()){
@@ -311,7 +323,12 @@ int CCurl::signinRequest(const char* szContainerID)
 	signinId = GetPrivateProfileInt("set", "signin_id", 1,  g_strAppSetIniPath.c_str());
 	 
 	deviceID = GetPrivateProfileInt("set", "device_id", 1, g_strAppSetIniPath.c_str());
-	  
+	
+	char szDeviceId[10] = { 0 }, szSigninId[10], szShopId[10] = { 0 }, szProcessId[10] = { 0 };
+	itoa(deviceID, szDeviceId, 10);
+	itoa(signinId, szSigninId, 10);
+	itoa(shopID, szShopId, 10);
+	itoa(processID, szProcessId, 10);
 	char szPostField[MAX1024] = { 0 }; 
 	/*sprintf_s(szPostField, "{\"container_no\":[\"%s\"],\"shop_plants_id\":\"%d\",\"append_shops_id\":\"%d\",\"camera_devices_id\":\"%d\",\"shop_processes_id\":\"%d\",\"path\":[\"%s\"]}",\
 						   szContainerID, signinId, shopID, deviceID, processID, strCapturePath.c_str());*/
@@ -322,10 +339,10 @@ int CCurl::signinRequest(const char* szContainerID)
 	Json::Value path_;   // 构建path数组   	
 	container_no.append(szContainerID); 
 	wValue["container_no"] = container_no;
-	wValue["shop_plants_id"] = signinId;
-	wValue["append_shops_id"] = shopID;
-	wValue["camera_devices_id"] = deviceID;
-	wValue["shop_processes_id"] = processID;
+	wValue["shop_plants_id"] = szSigninId;
+	wValue["append_shops_id"] = szShopId;
+	wValue["camera_devices_id"] = szDeviceId;
+	wValue["shop_processes_id"] = szProcessId;
 	path_.append(strCapturePath);
 	wValue["path"] = path_;
 	std::string strWrite = jsonWriter.write(wValue);

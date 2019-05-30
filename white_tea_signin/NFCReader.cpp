@@ -30,6 +30,8 @@ void CNFCReader::freeInstance()
 
 CNFCReader::CNFCReader()
 {
+	//调试打印
+	b_debugPrintf = (1 == GetPrivateProfileIntA("set", "debugPrintf", 0, g_strAppSetIniPath.c_str()));
 	//读取配置=》时间间隔
 	tempInterval = GetPrivateProfileIntA("set", "scanNFCReader", 10000, g_strAppSetIniPath.c_str());
 	//读取配置，获取正则表达式
@@ -173,7 +175,7 @@ std::string CNFCReader::readNfc()
 
 	static int carPreStatus = -1;
 	static BYTE carPreUID[7] = { 0 };//NFC卡片之前的状态
-	static string carPreData ;
+	static string carPreData ;  //之前的数据
 
 	//Check whether the reader is connected or not
 	if (FALSE == Sys_IsOpen(g_hDevice))
@@ -189,6 +191,7 @@ std::string CNFCReader::readNfc()
 			carPreStatus = 0;
 			memset(carPreUID, 0, 7);
 			carPreData.clear();
+			debugPrintf("53-100清空carPreData\n");
 		}
 		return "";
 	}
@@ -201,6 +204,7 @@ std::string CNFCReader::readNfc()
 			carPreStatus = status;
 			memset(carPreUID, 0, 7);
 			carPreData.clear();
+			debugPrintf("53-101清空carPreData\n");
 		}
 		else{
 			return "";
@@ -219,8 +223,6 @@ std::string CNFCReader::readNfc()
 			g_hDevice = HID_DEVICE(-1);
 			return "";
 		}
-		
-
 	}
 	if (status != 0)
 	{
@@ -251,7 +253,7 @@ std::string CNFCReader::readNfc()
 			memcpy(carPreUID, arryUID, 7);
 		}
 		if (bSame == true && carPreData.empty() == false){
-			
+			debugPrintf("53-102相同卡片返回carPreData\n");
 			return carPreData;
 		}
 	}
@@ -379,4 +381,16 @@ void CNFCReader::doAnalyzeNFC(const string inputStr)
 		// 播放提示音 不是有效的采茶证件
 		GET_PLAYS->addPlay(CPlaySound::fail2_invalid);
 	} 
+}
+
+void CNFCReader::debugPrintf( const char* format, ...)
+{
+	char szDstLan[MAX8192] = { 0 };
+	va_list arglist;
+	va_start(arglist, format);
+	vsprintf_s(szDstLan, MAX8192, format, arglist);
+	va_end(arglist);
+	if (b_debugPrintf){
+		printf("%s",szDstLan);
+	}
 }
