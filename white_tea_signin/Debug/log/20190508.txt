@@ -46,3 +46,4 @@
 09:30:08[debug]:App start! 
 09:30:08[info]:NFC读取卡器就绪,启动定时器0.5秒读取！
 09:30:10[error]:访问nfc超时，请重新连接nfc读卡器!
+18:05:53[debug]:App start! 

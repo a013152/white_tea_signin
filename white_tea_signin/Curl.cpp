@@ -325,10 +325,10 @@ int CCurl::signinRequest(const char* szContainerID)
 	deviceID = GetPrivateProfileInt("set", "device_id", 1, g_strAppSetIniPath.c_str());
 	
 	char szDeviceId[10] = { 0 }, szSigninId[10], szShopId[10] = { 0 }, szProcessId[10] = { 0 };
-	itoa(deviceID, szDeviceId, 10);
-	itoa(signinId, szSigninId, 10);
-	itoa(shopID, szShopId, 10);
-	itoa(processID, szProcessId, 10);
+	_itoa_s(deviceID, szDeviceId, 10);
+	_itoa_s(signinId, szSigninId, 10);
+	_itoa_s(shopID, szShopId, 10);
+	_itoa_s(processID, szProcessId, 10);
 	char szPostField[MAX1024] = { 0 }; 
 	/*sprintf_s(szPostField, "{\"container_no\":[\"%s\"],\"shop_plants_id\":\"%d\",\"append_shops_id\":\"%d\",\"camera_devices_id\":\"%d\",\"shop_processes_id\":\"%d\",\"path\":[\"%s\"]}",\
 						   szContainerID, signinId, shopID, deviceID, processID, strCapturePath.c_str());*/
