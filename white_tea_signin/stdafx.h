@@ -20,6 +20,8 @@ using namespace std;
 #define MAX8192 8192
 #define MAX1024 1024
 
+#define RET_SUCCESS 10000  //返回成功
+
 
 std::string getAppDir();
 extern std::string g_strAppDir;   //目录

@@ -17,9 +17,9 @@ int _tmain(int argc, _TCHAR* argv[])
 	//初始化
 	initSys();
 
-	//testFun();
+	//初始化NFC读卡器,设置定时读取
 	GET_NFC->init();
-	//设置NFC响应回调
+	//设置NFC响应回调=》签到函数
 	GET_NFC->setCallbackFun(CCurl::signinFunction);
 
 	//开启NFC读卡器

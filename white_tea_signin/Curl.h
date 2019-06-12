@@ -71,7 +71,10 @@ public:
 
 	int captureRequest(); //抓拍请求
 
-	int signinRequest(const char* szContainerID);  //签到请求
+	//签到请求,
+	//参数1 容器id（采茶证id)
+	//参数2 是否发送服务器图片path(false=》不发送，接口将返回采茶证是否能签到结果)
+	int signinRequest(const char* szContainerID, bool bUpload); 
 public:
 	//对外接口
 	static CCurl* getInstance(); //获取实例

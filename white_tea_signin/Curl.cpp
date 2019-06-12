@@ -253,7 +253,6 @@ void CCurl::autoLogin()
 						if (flag == false){
 							printf("获取流程未能解析,信息\n");
 						}
-
 					}
 				}
 				printf("自动登陆成功，解析到shopid：%d, processid:%d，token：%s\n", shopID, processID, szToken);
@@ -293,9 +292,15 @@ int CCurl::captureRequest()
 		returnValue = curlAPI(&stJson, szUrl, szPostField);
 	}
 	if (returnValue == 0){
-		if (stJson.iStatus == 10000){
+		strCapturePath.clear();
+		if (stJson.iStatus == RET_SUCCESS){
 			if (stJson.jsonVauleData["path"].isNull() == false && stJson.jsonVauleData["path"].isString()){
-				strCapturePath = stJson.jsonVauleData["path"].asCString();				
+				strCapturePath = stJson.jsonVauleData["path"].asCString();
+			}
+			else{
+				returnValue = -2;
+				printf("抓拍成功，但未解析path\n");
+				GET_LOG->logInfo(errorLog, "12-102抓拍成功，但未解析path");
 			}
 			if (stJson.jsonVauleData["url"].isNull() == false && stJson.jsonVauleData["url"].isString()){
 				printf("抓拍成功，解析到url：%s\n", stJson.jsonVauleData["url"].asCString());
@@ -314,8 +319,17 @@ int CCurl::captureRequest()
 	return returnValue;
 }
 
-int CCurl::signinRequest(const char* szContainerID)
+int CCurl::signinRequest(const char* szContainerID, bool bUpload)
 {
+	if (!szContainerID || 0 == strcmp(szContainerID,"")){
+		GET_LOG->logInfo(errorLog, "签到函数=》参数错误：container_no不能为空.");
+		return -1;
+	}
+	if (bUpload && strCapturePath.empty())
+	{
+		GET_LOG->logInfo(errorLog, "签到函数=》参数错误：path不能为空.");
+		return -2;
+	}
 	stResultJson stJson; stJson.clearMem();
 	char szUrl[MAX1024] = { 0 };
 	GetPrivateProfileString("url", "signin", "https://team.tdneed.com/api/source/signIn", szUrl, MAX1024, g_strAppSetIniPath.c_str());
@@ -336,26 +350,29 @@ int CCurl::signinRequest(const char* szContainerID)
 	Json::FastWriter jsonWriter;
 	Json::Value wValue;
 	Json::Value container_no;   // 构建容器数组
-	Json::Value path_;   // 构建path数组   	
-	container_no.append(szContainerID); 
+	container_no.append(szContainerID);
 	wValue["container_no"] = container_no;
 	wValue["shop_plants_id"] = szSigninId;
 	wValue["append_shops_id"] = szShopId;
 	wValue["camera_devices_id"] = szDeviceId;
 	wValue["shop_processes_id"] = szProcessId;
-	path_.append(strCapturePath);
-	wValue["path"] = path_;
+	if (bUpload)
+	{
+		Json::Value path_;   // 构建path数组   	
+		path_.append(strCapturePath);
+		wValue["path"] = path_;
+	}
+	
 	std::string strWrite = jsonWriter.write(wValue);
 	sprintf_s(szPostField, "%s", strWrite.c_str());
 
 	int returnValue = curlAPI(&stJson, szUrl, szPostField, szToken);
 	if (returnValue == 0){
+		returnValue = stJson.iStatus;
 		if (stJson.iStatus == 10000){
-			printf("签到成功：info=》%s\n", stJson.strInfo.c_str());
-			returnValue = 0;
+			printf("签到成功：info=》%s\n", stJson.strInfo.c_str());			
 		} 
-		else{
-			returnValue = stJson.iStatus;
+		else{			
 			printf("签到失败，%d, info：%s\n", stJson.iStatus, stJson.strInfo.c_str());
 			GET_LOG->logInfo(errorLog, "13-101签到失败，%d, info：%s\t参数%s", stJson.iStatus, stJson.strInfo.c_str(), szPostField);
 		}
@@ -430,24 +447,44 @@ void CCurl::signinFunction(const char* szData)
 {
 	int returnValue = 0;
 	printf("Curl类执行回调函数=》签到。data:%s\n", szData);
-	returnValue = pthis->captureRequest();
-	if (returnValue == 0)
+	returnValue = pthis->signinRequest(szData, false);
+	if (RET_SUCCESS == returnValue)
 	{
-		returnValue = pthis->signinRequest(szData);
-		if (returnValue == 0)
+		returnValue = pthis->captureRequest();
+		if (returnValue == 0 )
 		{
-			GET_PLAYS->addPlay(CPlaySound::end); //签到完成
-		}
-		else if (returnValue == 40001){
-			GET_PLAYS->addPlay(CPlaySound::fail5_already_signed); //已经签到
+			returnValue = pthis->signinRequest(szData, true);
+			if (RET_SUCCESS == returnValue){
+				GET_PLAYS->addPlay(CPlaySound::end); //签到完成
+			}
+			else if (returnValue == 40001){
+				// 播放提示音 不是有效的采茶证件
+				GET_PLAYS->addPlay(CPlaySound::fail2_invalid);
+			}
+			else if (returnValue == 40002){
+				GET_PLAYS->addPlay(CPlaySound::fail5_already_signed); //已经签到 
+			}
+			else{
+				GET_PLAYS->addPlay(CPlaySound::fail1_exception); //异常
+			}
 		}
 		else{
 			GET_PLAYS->addPlay(CPlaySound::fail1_exception); //异常
 		}
-	} 
-	else{
-		GET_PLAYS->addPlay(CPlaySound::fail1_exception); //异常
 	}
+	else if (returnValue == 40001)
+	{
+		// 播放提示音 不是有效的采茶证件
+		GET_PLAYS->addPlay(CPlaySound::fail2_invalid); 
+	}
+	else if (returnValue == 40002){
+		GET_PLAYS->addPlay(CPlaySound::fail5_already_signed); //已经签到 
+	}
+	else{
+		GET_PLAYS->addPlay(CPlaySound::fail1_exception); //异常		
+	}
+	
+	
 	
 }
 
