@@ -16,6 +16,12 @@ int _tmain(int argc, _TCHAR* argv[])
 {	
 	//初始化
 	initSys();
+	
+	//test
+	GET_CURL->init();
+	testFun();
+	getchar();
+	return 0;
 
 	//初始化NFC读卡器,设置定时读取
 	GET_NFC->init();
@@ -183,60 +189,93 @@ std::string  G2U(const char* gb2312)
 //}
 
 void testFun(){
-	stResultJson stJson; stJson.clearMem();
-	char szTemp[256] = { 0 }; sprintf_s(szTemp, "%s001.jpg",g_strAppDir.c_str());
-	if (_access(szTemp, 0) == -1){
-		printf("%s is not exist!\n", szTemp);
-		return;
-	}
-	int re = GET_CURL->curlAPI(stJson, "https://admin.tdneed.com/api/common/source/capture/upload", szTemp, "pc upload");
-	if (re == 0 && stJson.jsonVauleData.isNull() == false && stJson.jsonVauleData["url"].isNull() == false && stJson.jsonVauleData["url"].isString()){
-		printf("url:%s", stJson.jsonVauleData["url"].asCString());
+	stResultJson stJson; stJson.clearMem();	
+	char  szPostField[1024] = { 0 };
 
+	//先构建一个填写参数，然后把Json对象序列化成字符串，代码如下：
+	Json::FastWriter jsonWriter;
+	Json::Value wValue;
+	Json::Value path_;   // 构建容器数组
+	Json::Value data_1;  
+	Json::Value data_2;  
+	//
+	//wValue["shop_plants_id"] = szSigninId;
+	wValue["append_shops_id"] = "9";
+	wValue["camera_devices_id"] = "0";
+	wValue["brands_id"] = "1";
+	wValue["url"] = "https://shop.tdneed.com/#/source/detail?code=0aee8080c78bbed2f2884b1853c93cbe";
+	path_.append("phone/P5hbSTuqocLN3eRyu1AifWVf8P6ROg2Mvk4PfRKX?watermark/2/text/MjAxOS0wMy0wNiAxNjozNzozMCDnuqzluqY6MjMuMDMyOTc0ODcxNDAwNjkg57uP5bqmOjExMy4xMzUwNDEwMDAzMjQ0NSDpq5jluqY6LTE5LjcyMjQ2OTMyOTgzMzk4NCDljLrln5_vvJogIOacquefpQ==/font/5b6u6L2v6ZuF6buR/fontsize/600/dissolve/75/gravity/NorthWest/dx/60/dy/125/");
+	wValue["path"] = path_;
+	
+	data_2["id"]="2";	
+	data_2["value"] = "4";
+	data_1.append(data_2);
+
+	wValue["datas"] = data_1;
+
+	std::string strWrite = jsonWriter.write(wValue);
+	sprintf_s(szPostField, 1024, "%s", strWrite.c_str());
+
+	int re = GET_CURL->curlAPI(&stJson, "http://team.tongdao.com/api/source/anti-fake/relate", szPostField, GET_CURL->getToken());
+	if (re == 0 ){
+		printf("茶纹录入 state:%d \t info:%s", stJson.iStatus, stJson.strInfo.c_str());
 	}
+
 	return;
+	//stResultJson stJson; stJson.clearMem();
+	//char szTemp[256] = { 0 }; sprintf_s(szTemp, "%s001.jpg",g_strAppDir.c_str());
+	//if (_access(szTemp, 0) == -1){
+	//	printf("%s is not exist!\n", szTemp);
+	//	return;
+	//}
+	//int re = GET_CURL->curlAPI(stJson, "https://admin.tdneed.com/api/common/source/capture/upload", szTemp, "pc upload");
+	//if (re == 0 && stJson.jsonVauleData.isNull() == false && stJson.jsonVauleData["url"].isNull() == false && stJson.jsonVauleData["url"].isString()){
+	//	printf("url:%s", stJson.jsonVauleData["url"].asCString());
 
-	char *szPostField = "{\"watermark\":\"test watermark\"}";
-	char *watermark = "pc";
-	char *url = "https://admin.tdneed.com/api/common/source/capture/upload";
-	CURL *pCurl = NULL;
-	CURLcode res;
-	struct curl_slist *headerlist = NULL;
-	struct curl_httppost *post = NULL;
-	struct curl_httppost *last = NULL;
-	curl_formadd(&post, &last,
-		CURLFORM_COPYNAME, "file",                     //此处表示要传的参数名	
-		CURLFORM_FILE, "C:\\Users\\lenovo\\Desktop\\20171220152812132.png",                //此处表示图片文件的路径
-		CURLFORM_CONTENTTYPE, "image/png",
-		CURLFORM_END);
+	//}
+	//return;
+
+	//char *szPostField = "{\"watermark\":\"test watermark\"}";
+	//char *watermark = "pc";
+	//char *url = "https://admin.tdneed.com/api/common/source/capture/upload";
+	//CURL *pCurl = NULL;
+	//CURLcode res;
+	//struct curl_slist *headerlist = NULL;
+	//struct curl_httppost *post = NULL;
+	//struct curl_httppost *last = NULL;
 	//curl_formadd(&post, &last,
-	//	CURLFORM_COPYNAME, "backImage",              //此处表示要传的参数名	
-	//	CURLFORM_FILE, "tmp/ab/background.jpg",     //此处表示图片文件的路径
-	//	//CURLFORM_CONTENTTYPE, "image/jpeg",					
+	//	CURLFORM_COPYNAME, "file",                     //此处表示要传的参数名	
+	//	CURLFORM_FILE, "C:\\Users\\lenovo\\Desktop\\20171220152812132.png",                //此处表示图片文件的路径
+	//	CURLFORM_CONTENTTYPE, "image/png",
 	//	CURLFORM_END);
-	curl_formadd(&post, &last,
-		//CURLFORM_COPYNAME, "watermark",                           //此处为别的参数
-		//CURLFORM_COPYCONTENTS, watermark,             //要上传的json字符串
-		//CURLFORM_CONTENTLEN, strlen(watermark),
-		CURLFORM_PTRNAME, "watermark",
-		CURLFORM_PTRCONTENTS, watermark,
-		CURLFORM_END);
-	pCurl = curl_easy_init();
-	if (NULL != pCurl)
-	{
-		//curl_easy_setopt(pCurl, CURLOPT_TIMEOUT, 5);		
-		curl_easy_setopt(pCurl, CURLOPT_URL, url);
-		curl_easy_setopt(pCurl, CURLOPT_SSL_VERIFYHOST, true);  //检测域名
-		curl_easy_setopt(pCurl, CURLOPT_SSL_VERIFYPEER, 0);
-		curl_easy_setopt(pCurl, CURLOPT_HTTPPOST, post);
-		//curl_easy_setopt(pCurl, CURLOPT_POSTFIELDS, szPostField);  //-data 数据
-		//curl_easy_setopt(pCurl, CURLOPT_POSTFIELDSIZE, strlen(szPostField));  //-data 数据
-		res = curl_easy_perform(pCurl);
-		if (res != CURLE_OK)
-		{
-			printf("curl_easy_perform() failed，error code is:%s\n",
-				curl_easy_strerror(res));
-		}
-		curl_easy_cleanup(pCurl);
-	}
+	////curl_formadd(&post, &last,
+	////	CURLFORM_COPYNAME, "backImage",              //此处表示要传的参数名	
+	////	CURLFORM_FILE, "tmp/ab/background.jpg",     //此处表示图片文件的路径
+	////	//CURLFORM_CONTENTTYPE, "image/jpeg",					
+	////	CURLFORM_END);
+	//curl_formadd(&post, &last,
+	//	//CURLFORM_COPYNAME, "watermark",                           //此处为别的参数
+	//	//CURLFORM_COPYCONTENTS, watermark,             //要上传的json字符串
+	//	//CURLFORM_CONTENTLEN, strlen(watermark),
+	//	CURLFORM_PTRNAME, "watermark",
+	//	CURLFORM_PTRCONTENTS, watermark,
+	//	CURLFORM_END);
+	//pCurl = curl_easy_init();
+	//if (NULL != pCurl)
+	//{
+	//	//curl_easy_setopt(pCurl, CURLOPT_TIMEOUT, 5);		
+	//	curl_easy_setopt(pCurl, CURLOPT_URL, url);
+	//	curl_easy_setopt(pCurl, CURLOPT_SSL_VERIFYHOST, true);  //检测域名
+	//	curl_easy_setopt(pCurl, CURLOPT_SSL_VERIFYPEER, 0);
+	//	curl_easy_setopt(pCurl, CURLOPT_HTTPPOST, post);
+	//	//curl_easy_setopt(pCurl, CURLOPT_POSTFIELDS, szPostField);  //-data 数据
+	//	//curl_easy_setopt(pCurl, CURLOPT_POSTFIELDSIZE, strlen(szPostField));  //-data 数据
+	//	res = curl_easy_perform(pCurl);
+	//	if (res != CURLE_OK)
+	//	{
+	//		printf("curl_easy_perform() failed，error code is:%s\n",
+	//			curl_easy_strerror(res));
+	//	}
+	//	curl_easy_cleanup(pCurl);
+	//}
 }

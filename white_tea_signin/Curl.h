@@ -50,8 +50,7 @@ private:
 private:
 	//定时器函数
 	virtual int OnTimer(int id, int iParam = 0, string str = "");
-	//curl 处理函数 API, 返回0执行成功
-	int curlAPI(stResultJson* result_, const char* szUrl, const char* szPostField, const char* szToken_ = NULL);  
+	
 
 
 	
@@ -91,8 +90,10 @@ public:
 
 	//curl 处理函数 API, 返回0执行成功，上传文件
 	int curlAPI( stResultJson& result_, const char* szUrl, const char* szFilePath, const char* szWatermark, const char* szToken_ = NULL);
-
 	
+	//curl 处理函数 API, 返回0执行成功, 普通请求
+	int curlAPI(stResultJson* result_, const char* szUrl, const char* szPostField, const char* szToken_ = NULL);
 	
+	char* getToken(){ return szToken; }
 };
 
